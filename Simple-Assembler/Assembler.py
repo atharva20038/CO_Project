@@ -5,17 +5,29 @@
 
 import fileinput
 import sys
+#Type-A errors 
+def typeAerrors(ith_instruction) : 
+    if len(ith_instruction) != 5: #checks if instruction is correct
+        error_line = ith_instruction[4]
+        raise Exception("")
+                
+            #check if correct register names are used
+    if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or ith_instruction[3] not in reg_code or "FLAGS" in ith_instruction[1:]:
+        error_line = ith_instruction[4]
+        raise Exception("")
+                
 
 #add function
-def add(a,b,c,bin_list) : 
+def add(a,b,c,bin_list,ith_instruction) : 
     #complete add function keeping in mind all possibilities and add the binary code to the list and add update the values in the resgisters
     reg_data["FLAGS"] = [0,0,0,0] #reset flags
+    typeAerrors(ith_instruction)
     reg_data[a] = reg_data[b] + reg_data[c] #stores decimal value 
     if reg_data[a] >= pow(2,16): #checks for overflow
         reg_data[a] -= pow(2,16)
         reg_data["FLAGS"] = [1,0,0,0]
-    bin_list.append(opcode["add"][0]+"00"+reg_code[a]+reg_code[b]+reg_code[c]) #bianry value of instruction 
-    #return (r,bin_list)
+    bin_list.append(opcode["add"][0]+"00"+reg_code[a]+reg_code[b]+reg_code[c]) #binary value of instruction 
+    return (reg_data,bin_list)
 
 #taking the input
 opcode = {"add":("00000","A"),"sub":("00001","A"),"mov":("00010","B"),"mov":("00011","C")
@@ -69,18 +81,9 @@ for i in range(0,len(instruction_list)) :
     ith_instruction = instruction_list[i]
     if ith_instruction[0] in opcode:
         if ith_instruction[0] == "add" :
-            if len(ith_instruction) != 5: #checks if instruction is correct
-                flag = True
-                error_line = ith_instruction[4]
-                break
-            #check if correct register names are used
-            if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or ith_instruction[3] not in reg_code or "FLAGS" in ith_instruction[1:]:
-                error_line = ith_instruction[4]
-                flag = True
-                break
-            x = add(ith_instruction[1],ith_instruction[2],ith_instruction[3],bin_list)
-            # r = x[0]
-            # bin_list = x[1]
+            x = add(ith_instruction[1],ith_instruction[2],ith_instruction[3],ith_instruction)
+            reg_data = x[0]
+            bin_list = x[1]
 
     
 
