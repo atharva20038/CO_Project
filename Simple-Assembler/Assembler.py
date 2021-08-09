@@ -14,11 +14,13 @@ instruction_list = []
 while line_count < 256:
     line = input().strip()
     if line == '':
-        continue
+        raise Exception("Add Halt To End Program")
+        break
 
     if line == 'hlt' :
         temp = input().strip()
-        assert  temp=='', "Cant add commands after Halt"
+        if(temp!='') :
+            raise Exception("Cant add commands after Halt")
         break
     
     instruction_list.append(line.split())
