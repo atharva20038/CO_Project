@@ -21,9 +21,12 @@ r = [0,0,0,0,0,0,0,True]
 line_count = 0
 instruction_list = []
 bin_list = []
+#exact line number of the code 
+line_no = 0
 
 while line_count < 256:
     line = input().strip()
+    line_no +=1
     if line == '':
         continue
         
@@ -36,6 +39,7 @@ while line_count < 256:
         break
     
     instruction_list.append(line.split())
+    instruction_list[line_count].append(line_no)
     line_count += 1
 
 #Exception for instructions exceeding 256 instructions
@@ -46,20 +50,28 @@ if(line_count>256) :
 
 print(instruction_list)
 
-flag = True
+flag = False
+error_line = 0
 
-for i in range(0,instruction_list.length) : 
-    for j in dict.keys() : 
-        if(instruction_list[0][0]==j) :
-            flag = False 
+#adding instructions and raising exceptions otherwise
+
+for i in range(0,len(instruction_list)) : 
+    for j in opcode.keys() : 
+        if(instruction_list[i][0]==j) :
             if(j=="add") :
-                x = add(instruction_list[0][1],instruction_list[0][2],instruction_list[0][3],r,bin_list)
+                x = add(instruction_list[i][1],instruction_list[i][2],instruction_list[i][3],r,bin_list)
                 r = x[0]
                 bin_list = x[1]
 
+    #add remaining instructions
+    else : 
+        flag = True
+        error_line = instruction_list[i][len(instruction_list[i])-1]
+        break
 
-
-
+#adding exception for invalid syntax
+if flag : 
+    raise Exception("Invalid Syntax in Line : " ,error_line)
 
 
 
