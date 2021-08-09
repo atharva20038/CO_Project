@@ -5,10 +5,17 @@
 
 import fileinput
 import sys
+
 #add function
-def add(a,b,c,r,bin_list) : 
+def add(a,b,c,bin_list) : 
     #complete add function keeping in mind all possibilities and add the binary code to the list and add update the values in the resgisters
-    return (r,bin_list)
+    reg_data["FLAGS"] = [0,0,0,0] #reset flags
+    reg_data[a] = reg_data[b] + reg_data[c] #stores decimal value 
+    if reg_data[a] >= pow(2,16): #checks for overflow
+        reg_data[a] -= pow(2,16)
+        reg_data["FLAGS"] = [1,0,0,0]
+    bin_list.append(opcode["add"][0]+"00"+reg_code[a]+reg_code[b]+reg_code[c]) #bianry value of instruction 
+    #return (r,bin_list)
 
 #taking the input
 opcode = {"add":("00000","A"),"sub":("00001","A"),"mov":("00010","B"),"mov":("00011","C")
@@ -17,7 +24,10 @@ opcode = {"add":("00000","A"),"sub":("00001","A"),"mov":("00010","B"),"mov":("00
         "not":("01101","C"),"cmp":("01110","C"),"jmp":("01111","E"),"jlt":("10000","E"),"jgt":  ("10001", 'E'),"je":("10010", 'E'),
         "hlt":("10011","F")}
 
-r = [0,0,0,0,0,0,0,True]
+#r = [0,0,0,0,0,0,0,True]
+reg_code = {'R0':'000', 'R1':'001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}  #codes of registers
+reg_data = {'R0':0, 'R1':0, 'R2':0, 'R3':0, 'R4':0, 'R5':0, 'R6':0, 'FLAGS':[0,0,0,0]}  #decimal values of R0-R6 registers and V,L,G,E bits of flags register
+
 line_count = 0
 instruction_list = []
 bin_list = []
@@ -27,7 +37,7 @@ line_no = 0
 while line_count < 256:
     line = input().strip()
     line_no +=1
-    if line == '':
+    if line == '':  
         continue
         
 
@@ -56,22 +66,31 @@ error_line = 0
 #adding instructions and raising exceptions otherwise
 
 for i in range(0,len(instruction_list)) : 
-    for j in opcode.keys() : 
-        if(instruction_list[i][0]==j) :
-            if(j=="add") :
-                x = add(instruction_list[i][1],instruction_list[i][2],instruction_list[i][3],r,bin_list)
-                r = x[0]
-                bin_list = x[1]
+    ith_instruction = instruction_list[i]
+    if ith_instruction[0] in opcode:
+        if ith_instruction[0] == "add" :
+            if len(ith_instruction) != 5: #checks if instruction is correct
+                flag = True
+                error_line = ith_instruction[4]
+                break
+            #check if correct register names are used
+            if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or ith_instruction[3] not in reg_code or "FLAGS" in ith_instruction[1:]:
+                error_line = ith_instruction[4]
+                flag = True
+                break
+            x = add(ith_instruction[1],ith_instruction[2],ith_instruction[3],bin_list)
+            # r = x[0]
+            # bin_list = x[1]
 
-    #add remaining instructions
-    else : 
-        flag = True
-        error_line = instruction_list[i][len(instruction_list[i])-1]
-        break
+    
 
 #adding exception for invalid syntax
 if flag : 
-    raise Exception("Invalid Syntax in Line : " ,error_line)
+    #raise Exception("Invalid Syntax in Line : " ,error_line)
+    print('error')
+else:
+    for x in bin_list:
+        print(x)
 
 
 
