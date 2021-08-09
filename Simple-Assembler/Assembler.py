@@ -8,14 +8,33 @@ import sys
 #Type-A errors 
 def typeAerrors(ith_instruction) : 
     if len(ith_instruction) != 5: #checks if instruction is correct
-        error_line = ith_instruction[4]
+        error_line = ith_instruction[len(ith_instruction)-1]
         raise Exception("")
                 
             #check if correct register names are used
     if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or ith_instruction[3] not in reg_code or "FLAGS" in ith_instruction[1:]:
         error_line = ith_instruction[4]
         raise Exception("")
+
+def typeBerrors(ith_instruction):
+    if len(ith_instruction) != 4: #checks if instruction is correct
+        error_line = ith_instruction[len(ith_instruction)-1]
+        raise Exception("")
                 
+            #check if correct register names are used
+    if ith_instruction[1] not in reg_code or "FLAGS" in ith_instruction[1:]:
+        error_line = ith_instruction[3]
+        raise Exception("")  
+
+def typeCerrors(ith_instruction):
+    if len(ith_instruction) != 4: #checks if instruction is correct
+        error_line = ith_instruction[len(ith_instruction)-1]
+        raise Exception("")
+                
+            #check if correct register names are used
+    if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or "FLAGS" in ith_instruction[1:]:
+        error_line = ith_instruction[3]
+        raise Exception("")  
 
 #add function
 def add(a,b,c,bin_list,ith_instruction) : 
