@@ -16,6 +16,7 @@ def typeAerrors(ith_instruction) :
         error_line = ith_instruction[4]
         raise Exception("")
 
+#Type-B errors
 def typeBerrors(ith_instruction):
     if len(ith_instruction) != 4: #checks if instruction is correct
         error_line = ith_instruction[len(ith_instruction)-1]
@@ -26,6 +27,7 @@ def typeBerrors(ith_instruction):
         error_line = ith_instruction[3]
         raise Exception("")  
 
+#Type-C errors
 def typeCerrors(ith_instruction):
     if len(ith_instruction) != 4: #checks if instruction is correct
         error_line = ith_instruction[len(ith_instruction)-1]
