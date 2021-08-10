@@ -95,47 +95,45 @@ line_count = 0
 instruction_list = []
 bin_list = []
 #exact line number of the code 
-line_no = 0
 
 while line_count < 256:
     line = input().strip()
-    line_no +=1
     if line == '':  
         continue
-        
-
-    if line == 'hlt' :
-        temp = input().strip()
-        if(temp!='') :
-            #Exception for adding commands after halt
-            raise Exception("Cant add commands after Halt")
-        break
     
     instruction_list.append(line.split())
-    instruction_list[line_count].append(line_no)
+    instruction_list[line_count].append(line_count)
     line_count += 1
 
 
-#Exception for instructions exceeding 256 instructions
-if(line_count>256) :
-    raise Exception("No of Instructions Exceeded")
-
-
-
-#print(instruction_list)
-
 flag = False
 error_line = 0
+error_msg = ''
+last_var = False
 
 #adding instructions and raising exceptions otherwise
 
 for i in range(0,len(instruction_list)) : 
     ith_instruction = instruction_list[i]
     if ith_instruction[0] in opcode:
+        #put error checks on all the operation functions here
         if ith_instruction[0] == "add" :
             x = add(ith_instruction[1],ith_instruction[2],ith_instruction[3],ith_instruction)
             reg_data = x[0]
             bin_list = x[1]
+
+    elif ith_instruction[0] == "var":
+        if last_var:
+            error_msg = 'Variable not declared at top'
+            flag = True
+            error_line = i
+            break
+        
+        if not last_var and instruction_list[i+1][0] != 'var':
+            last_var = True
+
+        if len(ith_instruction) != 3:
+            error_msg = 'Wrong syntax while declaring variable'
 
     
 
