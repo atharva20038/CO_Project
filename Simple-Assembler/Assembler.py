@@ -15,6 +15,7 @@ def typeAerrors(ith_instruction) :
         error_line = ith_instruction[4]
         raise Exception("")
 
+#Type-B errors
 #Tye-B errors
 def typeBerrors(ith_instruction):
     if len(ith_instruction) != 4: #checks if instruction is correct
