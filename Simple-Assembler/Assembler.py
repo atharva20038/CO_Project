@@ -110,19 +110,36 @@ while line_count < 256:
 flag = False
 error_line = 0
 error_msg = ''
+
 last_var = False
+var_count = 0
 
 #adding instructions and raising exceptions otherwise
 
 for i in range(0,len(instruction_list)) : 
     ith_instruction = instruction_list[i]
-    if ith_instruction[0] in opcode:
+
+    if i == len(instruction_list)-1 and ith_instruction[0] != 'hlt':
+        error_msg = 'hlt not present'
+        error_line = i
+        flag = True
+        break
+
+    elif ith_instruction[0] == 'hlt' and i != len(instruction_list)-1:
+        error_line = i
+        error_msg = 'hlt not last statement'
+        flag = True
+        break
+
+    #check for errors in general instructon
+    elif ith_instruction[0] in opcode:
         #put error checks on all the operation functions here
         if ith_instruction[0] == "add" :
             x = add(ith_instruction[1],ith_instruction[2],ith_instruction[3],ith_instruction)
             reg_data = x[0]
             bin_list = x[1]
 
+    #check for errors in variables
     elif ith_instruction[0] == "var":
         if last_var:
             error_msg = 'Variable not declared at top'
@@ -135,6 +152,47 @@ for i in range(0,len(instruction_list)) :
 
         if len(ith_instruction) != 3:
             error_msg = 'Wrong syntax while declaring variable'
+            error_line = i
+            flag = True
+            break
+
+        temp = []
+        temp.extend(ith_instruction[1])
+        for e in temp:
+            if (ord(e) not in range(ord('a'), ord('z')+1)) or (ord(e) not in range(ord('A'), ord('Z')+1)) or ord(e) != ord('_'):
+                error_msg = 'Wrong variable name'
+                error_line = i
+                flag = True
+                break
+        if flag:
+            break
+
+        variables[ith_instruction[1]] = (0, i)
+        var_count += 1
+
+    #checks for error in label declaration
+    elif ith_instruction[0][-1] == ":":
+        temp = []
+        temp.extend(ith_instruction[0][0:-1])
+        for e in temp:
+            if (ord(e) not in range(ord('a'), ord('z')+1)) or (ord(e) not in range(ord('A'), ord('Z')+1)) or ord(e) != ord('_'):
+                error_msg = 'Wrong label name'
+                error_line = i
+                flag = True
+                break
+        if flag:
+            break
+
+        if ith_instruction[0][0:-1] in variables:
+            error_line = 'Variable name used as label name'
+            error_line = i
+            flag = True
+            break
+
+        #label is followed a general instruction. So add all the error checks for instructions above here also
+
+
+
 
     
 
