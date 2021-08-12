@@ -8,15 +8,14 @@
 def typeAerrors(ith_instruction) : 
     if len(ith_instruction) != 5: #checks if instruction is correct
         error_line = ith_instruction[len(ith_instruction)-1]
-        raise Exception("")
+        raise Exception("Does Not Match the Required Number Of Tokens")
                 
-            #check if correct register names are used
+    #check if correct register names are used
     if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or ith_instruction[3] not in reg_code or "FLAGS" in ith_instruction[1:]:
         error_line = ith_instruction[4]
-        raise Exception("")
+        raise Exception("Invalid Register Name Used")
 
 #Type-B errors
-#Tye-B errors
 def typeBerrors(ith_instruction):
     if len(ith_instruction) != 4: #checks if instruction is correct
         error_line = ith_instruction[len(ith_instruction)-1]
