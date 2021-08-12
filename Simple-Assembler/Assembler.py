@@ -137,6 +137,13 @@ for i in range(0,len(instruction_list)) :
         flag = True
         break
 
+    elif 'hlt' in ith_instruction and i == len(instruction_list)-1:
+        if len(ith_instruction != 2):
+            error_line = 'Wrong hlt syntax'
+            error_line = i
+            flag = True
+            break
+
     #check for errors in general instructon
     elif ith_instruction[0] in opcode:
         #put error checks on all the operation functions here
@@ -200,6 +207,27 @@ for i in range(0,len(instruction_list)) :
 
         #label is followed a general instruction. So add all the error checks for instructions above here also
 
+        if 'hlt' == ith_instruction[1]:
+            if len(ith_instruction != 3):
+                error_msg = 'Wrong syntax'
+                error_line = i
+                flag = True
+                break
+            
+            elif i != len(instruction_list)-1:
+                error_msg = 'hlt not last instruction'
+                error_line = i
+                flag = True
+                break
+
+        elif ith_instruction[1] in opcode:
+            print()
+            
+        else:
+            error_msg = 'Wrong command after label'
+            error_line = i
+            flag = True
+            break
 
 
 #error for checking stack limit
