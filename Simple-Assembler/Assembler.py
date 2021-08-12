@@ -21,52 +21,60 @@ def typeAerrors(ith_instruction) :
 def typeBerrors(ith_instruction):
     if len(ith_instruction) != 4: #checks if instruction is correct
         error_line = ith_instruction[len(ith_instruction)-1]
-        raise Exception("")
+        return (True,"Doesnot match the required number of tokens")
                 
             #check if correct register names are used
     if ith_instruction[1] not in reg_code or "FLAGS" in ith_instruction[1:]:
         error_line = ith_instruction[3]
-        raise Exception("")  
+        return (True,"Invalid register name used") 
 
     #check if 3rd token is a valid immediate value
-    if ith_instruction[2][0] != "$" or int(ith_instruction[2][1:] > 255) or int(ith_instruction[2][1:] < 0):
+    if ith_instruction[2][0] != "$" or ith_instruction[1:].isnumeric() or int(ith_instruction[2][1:]) > 255 or int(ith_instruction[2][1:]) < 0:
         error_line = ith_instruction[3]
-        raise Exception("")
+        return (True,"Invalid Immediate Value Syntax")
+
+    return (False,"")
 
 #Type-C errors
 def typeCerrors(ith_instruction):
     if len(ith_instruction) != 4: #checks if instruction is correct
         error_line = ith_instruction[len(ith_instruction)-1]
-        raise Exception("")
+        return (True,"Doesnot match the required number of tokens")
                 
             #check if correct register names are used
     if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or "FLAGS" in ith_instruction[1:]:
         error_line = ith_instruction[3]
-        raise Exception("")  
+        return (True,"Invalid register name used")
+
+    return (False,"")
 
 #Type-D errors     
 def typeDerrors(ith_instruction):
     if len(ith_instruction) != 4:
         error_line = ith_instruction[len(ith_instruction)-1]
-        raise Exception("")
+        return (True,"Doesnot match the required number of tokens")
 
     if ith_instruction[1] not in reg_code or ith_instruction[1] == "FLAGS":
         error_line = ith_instruction[len(ith_instruction)-1]
-        raise Exception
+        return (True,"Invalid register name used")
 
     if ith_instruction[2] not in variables:
         error_line = ith_instruction[len(ith_instruction)-1]
-        raise Exception
+        return (True,"Variable Not Declared")
+
+    return (False,"")
 
 #Type-E errors
 def typeEerrors(ith_instruction):
     if len(ith_instruction) != 3:
         error_line = ith_instruction[len(ith_instruction)-1]
-        raise Exception
+        return (True,"Doesnot match the required number of tokens")
     
     if ith_instruction[1] not in labels:
         error_line = ith_instruction[-1]
-        raise Exception
+        return (True,"Label Not Declared")
+
+    return (False,"")
 
 #add function
 def add(a,b,c) : 
