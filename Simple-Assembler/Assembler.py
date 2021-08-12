@@ -79,12 +79,7 @@ def typeEerrors(ith_instruction):
 #add function
 def add(a,b,c) : 
     #complete add function keeping in mind all possibilities and add the binary code to the list and add update the values in the resgisters
-    reg_data["FLAGS"] = [0,0,0,0] #reset flags
     
-    
-    if reg_data[a] >= pow(2,16): #checks for overflow
-        reg_data[a] -= pow(2,16)
-        reg_data["FLAGS"] = [1,0,0,0]
     bin_list.append(opcode["add"][0]+"00"+reg_code[a]+reg_code[b]+reg_code[c]) #binary value of instruction 
     return bin_list
 
