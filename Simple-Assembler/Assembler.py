@@ -8,12 +8,14 @@
 def typeAerrors(ith_instruction) : 
     if len(ith_instruction) != 5: #checks if instruction is correct
         error_line = ith_instruction[len(ith_instruction)-1]
-        raise Exception("Does Not Match the Required Number Of Tokens")
+        return (True,"Does Not Match the Required Number Of Tokens")
                 
     #check if correct register names are used
     if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or ith_instruction[3] not in reg_code or "FLAGS" in ith_instruction[1:]:
         error_line = ith_instruction[4]
-        raise Exception("Invalid Register Name Used")
+        return(True,"Invalid Register Name Used")
+
+    return (False,"")
 
 #Type-B errors
 def typeBerrors(ith_instruction):
@@ -67,10 +69,10 @@ def typeEerrors(ith_instruction):
         raise Exception
 
 #add function
-def add(a,b,c,ith_instruction) : 
+def add(a,b,c) : 
     #complete add function keeping in mind all possibilities and add the binary code to the list and add update the values in the resgisters
     reg_data["FLAGS"] = [0,0,0,0] #reset flags
-    typeAerrors(ith_instruction)
+    
     reg_data[a] = reg_data[b] + reg_data[c] #stores decimal value 
     if reg_data[a] >= pow(2,16): #checks for overflow
         reg_data[a] -= pow(2,16)
@@ -123,13 +125,13 @@ var_count = 0
 for i in range(0,len(instruction_list)) : 
     ith_instruction = instruction_list[i]
 
-    if i == len(instruction_list)-1 and ith_instruction[0] != 'hlt':
+    if i == len(instruction_list)-1 and  'hlt' not in ith_instruction:
         error_msg = 'hlt not present'
         error_line = i
         flag = True
         break
 
-    elif ith_instruction[0] == 'hlt' and i != len(instruction_list)-1:
+    elif 'hlt' in ith_instruction and i != len(instruction_list)-1:
         error_line = i
         error_msg = 'hlt not last statement'
         flag = True
@@ -139,7 +141,10 @@ for i in range(0,len(instruction_list)) :
     elif ith_instruction[0] in opcode:
         #put error checks on all the operation functions here
         if ith_instruction[0] == "add" :
-            x = add(ith_instruction[1],ith_instruction[2],ith_instruction[3],ith_instruction)
+            temp = typeAerrors(ith_instruction)
+            flag = temp[0]
+            if(flag) : break
+            x = add(ith_instruction[1],ith_instruction[2],ith_instruction[3])
             reg_data = x[0]
             bin_list = x[1]
 
