@@ -86,7 +86,7 @@ def add(a,b,c) :
         reg_data[a] -= pow(2,16)
         reg_data["FLAGS"] = [1,0,0,0]
     bin_list.append(opcode["add"][0]+"00"+reg_code[a]+reg_code[b]+reg_code[c]) #binary value of instruction 
-    return (reg_data,bin_list)
+    return bin_list
 
 #lists and dictionaries to store codes and data
 opcode = {"add":("00000","A"),"sub":("00001","A"),"mov":("00010","B"),"mov":("00011","C")
@@ -152,9 +152,8 @@ for i in range(0,len(instruction_list)) :
             temp = typeAerrors(ith_instruction)
             flag = temp[0]
             if(flag) : break
-            x = add(ith_instruction[1],ith_instruction[2],ith_instruction[3])
-            reg_data = x[0]
-            bin_list = x[1]
+            bin_list = add(ith_instruction[1],ith_instruction[2],ith_instruction[3])
+            
 
     #check for errors in variables
     elif ith_instruction[0] == "var":
