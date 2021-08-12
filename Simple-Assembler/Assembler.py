@@ -81,7 +81,7 @@ def add(a,b,c) :
     #complete add function keeping in mind all possibilities and add the binary code to the list and add update the values in the resgisters
     reg_data["FLAGS"] = [0,0,0,0] #reset flags
     
-    reg_data[a] = reg_data[b] + reg_data[c] #stores decimal value 
+    
     if reg_data[a] >= pow(2,16): #checks for overflow
         reg_data[a] -= pow(2,16)
         reg_data["FLAGS"] = [1,0,0,0]
