@@ -96,14 +96,17 @@ instruction_list = []
 bin_list = []
 #exact line number of the code 
 
-while line_count < 256:
-    line = input().strip()
-    if line == '':  
-        continue
-    
-    instruction_list.append(line.split())
-    instruction_list[line_count].append(line_count)
-    line_count += 1
+while True:
+    try : 
+        line = input().strip()
+        if line == '':  
+            continue
+        
+        instruction_list.append(line.split())
+        instruction_list[line_count].append(line_count)
+        line_count += 1
+    except : 
+        break
 
 
 flag = False
@@ -112,6 +115,8 @@ error_msg = ''
 
 last_var = False
 var_count = 0
+
+
 
 #adding instructions and raising exceptions otherwise
 
@@ -192,8 +197,12 @@ for i in range(0,len(instruction_list)) :
 
 
 
+#error for checking stack limit
+if(line_count+var_count>256) : 
+    error = "Cant have more than 256 instructions"
+    flag = True
 
-    
+ 
 
 #adding exception for invalid syntax
 if flag : 
