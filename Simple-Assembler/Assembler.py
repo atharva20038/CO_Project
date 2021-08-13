@@ -129,6 +129,8 @@ def RightShift(a,b):
         Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
+
+    ## Appending the opcode of Right shift instruction along with the syntax supposed for the right shift instruction
     bin_list.append(opcode["rs"][0] + reg_code[a] + Imm)
     return bin_list
 
@@ -139,6 +141,8 @@ def LeftShift(a,b):
         Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
+
+    ## Appending the opcode of left shift instruction along with the syntax supposed for the left shift instruction
     bin_list.append(opcode["ls"][0] + reg_code[a] + Imm)
     return bin_list
 
@@ -147,18 +151,22 @@ def LeftShift(a,b):
  ##TYPE C starts
 def MovReg(a,b):
     bin_list.append(opcode["mov"][0] + "00000" + reg_code[a] + reg_code[b])
+    ## Appending the opcode of move value to register instruction along with the syntax supposed for it
     return bin_list
 
 def Div(a,b):
     bin_list.append(opcode["div"][0] + "00000" + reg_code[a] + reg_code[b])
+    ## Appending the opcode of division instruction along with the syntax supposed for the division instruction
     return bin_list
 
 def Invert(a,b):
     bin_list.append(opcode["not"][0] + "00000" + reg_code[a] + reg_code[b])
+    ## Appending the opcode of invert instruction along with the syntax supposed for the division instruction
     return bin_list
 
 def Compare(a,b):
     bin_list.append(opcode["cmp"][0] + "00000" + reg_code[a] + reg_code[b])
+    ## Appending the opcode of compare instruction along with the syntax supposed for the compare instruction
     return bin_list
 #TYPE C ends
 
