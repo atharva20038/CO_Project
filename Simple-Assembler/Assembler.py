@@ -192,9 +192,9 @@ def Store(a,b):
     return bin_list
 ##TYPE D ends
 ##TYPE E starts
-def UncondJump(address):     ##line_count = -1 // 00000000
-    Bin = bin(address)
-    if(len(Bin[2:])<8):
+def UncondJump(address):     ## Line count = -1 -> Address 00000000
+    Bin = bin(address)       ## Convert the given linecount into binary and check for length and make appropriate additions
+    if(len(Bin[2:])<8):      ## to convert the binary into 8 bit format
         Zeroes = 8-len(Bin[2:])
         Imm = str("0"*Zeroes) + Bin[2:]
     else:
@@ -250,8 +250,8 @@ opcode = {"add":("00000","A"),"sub":("00001","A"),"mov":("00010","B"),"mov":("00
 reg_code = {'R0':'000', 'R1':'001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}  #codes of registers
 reg_data = {'R0':0, 'R1':0, 'R2':0, 'R3':0, 'R4':0, 'R5':0, 'R6':0, 'FLAGS':[0,0,0,0]}  #decimal values of R0-R6 registers and V,L,G,E bits of flags register
 
-variables = {}  #dictionary to store memory and values of variables
-labels = {}  #dictionary to store memory of labels
+variables = {}  # Dictionary to store memory and values of variables
+labels = {}  # Dictionary to store memory of labels
 
 ##line_count contains the total number of lines excluding the blank lines including the variable declarations
 line_count = 0
