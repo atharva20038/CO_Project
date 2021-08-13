@@ -110,7 +110,7 @@ def MovImm(a,b):
     Bin = bin(b)                              ##CHECK FOR MOV , SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
-        Imm = str(0*Zeroes) + Bin[2:]
+        Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
     bin_list.append(opcode["mov"][0] + reg_code[a] + Imm)
@@ -120,7 +120,7 @@ def RightShift(a,b):
     Bin = bin(b)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
-        Imm = str(0*Zeroes) + Bin[2:]
+        Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
     bin_list.append(opcode["rs"][0] + reg_code[a] + Imm)
@@ -130,7 +130,7 @@ def LeftShift(a,b):
     Bin = bin(b)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
-        Imm = str(0*Zeroes) + Bin[2:]
+        Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
     bin_list.append(opcode["ls"][0] + reg_code[a] + Imm)
@@ -161,7 +161,7 @@ def Load(a,b):
     Bin = bin(variables[b])
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
-        Imm = str(0*Zeroes) + Bin[2:]
+        Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
     bin_list.append(opcode["ld"][0] + reg_code[a] + Imm)
@@ -171,7 +171,7 @@ def Store(a,b):
     Bin = bin(variables[b])
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
-        Imm = str(0*Zeroes) + Bin[2:]
+        Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
     bin_list.append(opcode["st"][0] + reg_code[a] + Imm)
@@ -182,7 +182,7 @@ def UncondJump(address):     ##line_count = -1 // 00000000
     Bin = bin(address)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
-        Imm = str(0*Zeroes) + Bin[2:]
+        Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
     bin_list.append(opcode["jmp"][0] + "000"+ Imm)
@@ -192,30 +192,30 @@ def JumpIfLess(address):
     Bin = bin(address)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
-        Imm = str(0*Zeroes) + Bin[2:]
+        Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
-    bin_list.append(opcode["jlt"][0] "000"+ Imm)
+    bin_list.append(opcode["jlt"][0]+"000"+ Imm)
     return bin_list
 
 def JumpIfGreater(address):
     Bin = bin(address)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
-        Imm = str(0*Zeroes) + Bin[2:]
+        Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
-    bin_list.append(opcode["jgt"][0] "000"+ Imm)
+    bin_list.append(opcode["jgt"][0]+"000"+ Imm)
     return bin_list
 
 def JumpIfEqual(address):
     Bin = bin(address)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
-        Imm = str(0*Zeroes) + Bin[2:]
+        Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
-    bin_list.append(opcode["je"][0] "000"+ Imm)
+    bin_list.append(opcode["je"][0]+"000"+ Imm)
     return bin_list
 ##TYPE E ends
 
