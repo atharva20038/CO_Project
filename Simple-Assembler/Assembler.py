@@ -107,7 +107,7 @@ def And(a,b,c):
 ##Type A ends
 ##Type B starts
 def MovImm(a,b):
-    Bin = bin(b)                              ##CHECK FOR MOV , SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
+    Bin = bin(b[1:])                              ##CHECK FOR MOV , SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
         Imm = str("0"*Zeroes) + Bin[2:]
@@ -577,7 +577,7 @@ for i in range(0,len(instruction_list)) :
                 break
 
             else : 
-                bin.append(opcode["hlt"] + "0"*11)
+                bin_list = Halt();
 
         elif ith_instruction[1] in opcode:
             ########## Problem -1  : incomplete error message
