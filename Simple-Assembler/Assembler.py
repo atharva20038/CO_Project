@@ -119,11 +119,11 @@ def MovImm(a,b):
     else:
         Imm = Bin[2:]                             ##Otherwise ignoring
     ## Appending the opcode of and instruction along with the syntax supposed for the and instruction
-    bin_list.append(opcode["mov"][0] + reg_code[a] + Imm)
+    bin_list.append(opcode["mov"][0][0] + reg_code[a] + Imm)
     return bin_list
 
 def RightShift(a,b):
-    Bin = bin(b[1:])
+    Bin = bin(int(b[1:]))
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
         Imm = str("0"*Zeroes) + Bin[2:]
@@ -135,7 +135,7 @@ def RightShift(a,b):
     return bin_list
 
 def LeftShift(a,b):
-    Bin = bin(b[1:])
+    Bin = bin(int(b[1:]))
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
         Imm = str("0"*Zeroes) + Bin[2:]
@@ -150,7 +150,7 @@ def LeftShift(a,b):
 
  ##TYPE C starts
 def MovReg(a,b):
-    bin_list.append(opcode["mov"][0] + "00000" + reg_code[a] + reg_code[b])
+    bin_list.append(opcode["mov"][1][0] + "00000" + reg_code[a] + reg_code[b])
     ## Appending the opcode of move value to register instruction along with the syntax supposed for it
     return bin_list
 
@@ -172,7 +172,7 @@ def Compare(a,b):
 
 #TYPE D starts
 def Load(a,b):
-    Bin = bin(variables[b])
+    Bin = bin(b)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
         Imm = str("0"*Zeroes) + Bin[2:]
@@ -182,7 +182,7 @@ def Load(a,b):
     return bin_list
 
 def Store(a,b):
-    Bin = bin(variables[b])
+    Bin = bin(b)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
         Imm = str("0"*Zeroes) + Bin[2:]
@@ -241,7 +241,7 @@ def Halt():
 
 
 #lists and dictionaries to store codes and data
-opcode = {"add":("00000","A"),"sub":("00001","A"),"mov":("00010","B"),"mov":("00011","C")
+opcode = {"add":("00000","A"),"sub":("00001","A"),"mov":(("00010","B"),("00011","C"))
         ,"ld":("00100","D"),"st":("00101","D"),"mul":("00110","A"),"div":("00111","C"),
         "rs":("01000","B"),"ls":("01001","B"),"xor":("01010","A"),"or":("01011","A"),"and":("01100","A"),
         "not":("01101","C"),"cmp":("01110","C"),"jmp":("01111","E"),"jlt":("10000","E"),"jgt":  ("10001", 'E'),"je":("10010", 'E'),
