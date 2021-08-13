@@ -77,16 +77,154 @@ def typeEerrors(ith_instruction):
     return (False,"")
 
 #add function
-def add(a,b,c) : 
+##Type A starts
+def Add(a,b,c) : 
     #complete add function keeping in mind all possibilities and add the binary code to the list and add update the values in the resgisters
-    reg_data["FLAGS"] = [0,0,0,0] #reset flags
     
-    
-    if reg_data[a] >= pow(2,16): #checks for overflow
-        reg_data[a] -= pow(2,16)
-        reg_data["FLAGS"] = [1,0,0,0]
     bin_list.append(opcode["add"][0]+"00"+reg_code[a]+reg_code[b]+reg_code[c]) #binary value of instruction 
     return bin_list
+
+def Sub(a,b,c):
+    bin_list.append(opcode["sub"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
+    return bin_list
+
+def Mul(a,b,c):
+    bin_list.append(opcode["mul"][0] +"00"reg_code[a] + reg_code[b] + reg_code[c])
+    return bin_list
+
+def Xor(a,b,c):
+    bin_list.append(opcode["xor"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
+    return bin_list
+
+def Or(a,b,c):
+    bin_list.append(opcode["or"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
+    return bin_list
+
+def And(a,b,c):
+    bin_list.append(opcode["and"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
+    return bin_list
+
+##Type A ends
+##Type B starts
+def MovImm(a,b):
+    Bin = bin(b)                              ##CHECK FOR MOV , SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
+    if(len(Bin[2:])<8):
+        Zeroes = 8-len(Bin[2:])
+        Imm = str("0"*Zeroes) + Bin[2:]
+    else:
+        Imm = Bin[2:]
+    bin_list.append(opcode["mov"][0] + reg_code[a] + Imm)
+    return bin_list
+
+def RightShift(a,b):
+    Bin = bin(b)
+    if(len(Bin[2:])<8):
+        Zeroes = 8-len(Bin[2:])
+        Imm = str("0"*Zeroes) + Bin[2:]
+    else:
+        Imm = Bin[2:]
+    bin_list.append(opcode["rs"][0] + reg_code[a] + Imm)
+    return bin_list
+
+def LeftShift(a,b):
+    Bin = bin(b)
+    if(len(Bin[2:])<8):
+        Zeroes = 8-len(Bin[2:])
+        Imm = str("0"*Zeroes) + Bin[2:]
+    else:
+        Imm = Bin[2:]
+    bin_list.append(opcode["ls"][0] + reg_code[a] + Imm)
+    return bin_list
+
+ ##TYPE B ends
+
+ ##TYPE C starts
+def MovReg(a,b):
+    bin_list.append(opcode["mov"][0] + "00000" + reg_code[a] + reg_code[b])
+    return bin_list
+
+def Div(a,b):
+    bin_list.append(opcode["div"][0] + "00000" + reg_code[a] + reg_code[b])
+    return bin_list
+
+def Invert(a,b):
+    bin_list.append(opcode["not"][0] + "00000" + reg_code[a] + reg_code[b])
+    return bin_list
+
+def Compare(a,b):
+    bin_list.append(opcode["cmp"][0] + "00000" + reg_code[a] + reg_code[b])
+    return bin_list
+#TYPE C ends
+
+#TYPE D starts
+def Load(a,b):
+    Bin = bin(variables[b])
+    if(len(Bin[2:])<8):
+        Zeroes = 8-len(Bin[2:])
+        Imm = str("0"*Zeroes) + Bin[2:]
+    else:
+        Imm = Bin[2:]
+    bin_list.append(opcode["ld"][0] + reg_code[a] + Imm)
+    return bin_list
+
+def Store(a,b):
+    Bin = bin(variables[b])
+    if(len(Bin[2:])<8):
+        Zeroes = 8-len(Bin[2:])
+        Imm = str("0"*Zeroes) + Bin[2:]
+    else:
+        Imm = Bin[2:]
+    bin_list.append(opcode["st"][0] + reg_code[a] + Imm)
+    return bin_list
+##TYPE D ends
+##TYPE E starts
+def UncondJump(address):     ##line_count = -1 // 00000000
+    Bin = bin(address)
+    if(len(Bin[2:])<8):
+        Zeroes = 8-len(Bin[2:])
+        Imm = str("0"*Zeroes) + Bin[2:]
+    else:
+        Imm = Bin[2:]
+    bin_list.append(opcode["jmp"][0] + "000"+ Imm)
+    return bin_list
+
+def JumpIfLess(address):
+    Bin = bin(address)
+    if(len(Bin[2:])<8):
+        Zeroes = 8-len(Bin[2:])
+        Imm = str("0"*Zeroes) + Bin[2:]
+    else:
+        Imm = Bin[2:]
+    bin_list.append(opcode["jlt"][0]+"000"+ Imm)
+    return bin_list
+
+def JumpIfGreater(address):
+    Bin = bin(address)
+    if(len(Bin[2:])<8):
+        Zeroes = 8-len(Bin[2:])
+        Imm = str("0"*Zeroes) + Bin[2:]
+    else:
+        Imm = Bin[2:]
+    bin_list.append(opcode["jgt"][0]+"000"+ Imm)
+    return bin_list
+
+def JumpIfEqual(address):
+    Bin = bin(address)
+    if(len(Bin[2:])<8):
+        Zeroes = 8-len(Bin[2:])
+        Imm = str("0"*Zeroes) + Bin[2:]
+    else:
+        Imm = Bin[2:]
+    bin_list.append(opcode["je"][0]+"000"+ Imm)
+    return bin_list
+##TYPE E ends
+
+##TYPE F starts
+def Halt():
+    bin_list.append(opcode["hlt"][0])
+    return bin_list
+##TYPE F ends
+
 
 #lists and dictionaries to store codes and data
 opcode = {"add":("00000","A"),"sub":("00001","A"),"mov":("00010","B"),"mov":("00011","C")
@@ -99,7 +237,7 @@ reg_code = {'R0':'000', 'R1':'001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'10
 reg_data = {'R0':0, 'R1':0, 'R2':0, 'R3':0, 'R4':0, 'R5':0, 'R6':0, 'FLAGS':[0,0,0,0]}  #decimal values of R0-R6 registers and V,L,G,E bits of flags register
 
 variables = {}  #dictionary to store memory and values of variables
-labels = {}  #dictionary ti store memory of labels
+labels = {}  #dictionary to store memory of labels
 
 line_count = 0
 instruction_list = []
@@ -179,7 +317,7 @@ for i in range(0,len(instruction_list)) :
             flag = True
             break
 
-        temp = []
+        temp = []      ##variable store
         temp.extend(ith_instruction[1])
         for e in temp:
             if (ord(e) not in range(ord('a'), ord('z')+1)) or (ord(e) not in range(ord('A'), ord('Z')+1)) or ord(e) != ord('_'):
