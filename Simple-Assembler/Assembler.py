@@ -239,8 +239,11 @@ reg_data = {'R0':0, 'R1':0, 'R2':0, 'R3':0, 'R4':0, 'R5':0, 'R6':0, 'FLAGS':[0,0
 variables = {}  #dictionary to store memory and values of variables
 labels = {}  #dictionary to store memory of labels
 
+##line_count contains the total number of lines excluding the blank lines including the variable declarations
 line_count = 0
+##inlcudes all the lines including blank spaces and variables
 blank_included_count = 0
+
 instruction_list = []
 bin_list = []
 #exact line number of the code 
@@ -254,9 +257,11 @@ while True:
         
         instruction_list.append(line.split())
         #included blanks in the count
-        instruction_list[line_count].append(blank_included_count)
         line_count += 1
         blank_included_count += 1
+        instruction_list[line_count].append(blank_included_count)
+        
+        
     except : 
         break
 
@@ -266,6 +271,7 @@ error_line = 0
 error_msg = ''
 
 last_var = False
+##Number of variables declared
 var_count = 0
 
 
