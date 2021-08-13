@@ -25,9 +25,6 @@ def typeBerrors(ith_instruction):
                 
             #check if correct register names are used
 
-    # if ith_instruction[0] == 'mov' and (ith_instruction[1] not in reg_code or ith_instruction[1] == 'FLAGS' or ith_instruction[2] not in reg_code):
-    #     return(True, "Invalid register used at line : " + str(ith_instruction[-1])) 
-
     if ith_instruction[1] not in reg_code or "FLAGS" in ith_instruction[1:]:
         
         return (True,"Invalid register name used at line : " + str(ith_instruction[len(ith_instruction)-1])) 
@@ -46,9 +43,13 @@ def typeCerrors(ith_instruction):
         return (True,"Doesnot match the required number of tokens at line : " + str(ith_instruction[len(ith_instruction)-1]))
                 
             #check if correct register names are used
-    if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or "FLAGS" in ith_instruction[1:]:
-        
-        return (True,"Invalid register name used at line : " + str(ith_instruction[len(ith_instruction)-1]))
+    if ith_instruction[0] == 'mov':
+        if ith_instruction[1] not in reg_code or ith_instruction[1] == 'FLAGS' or ith_instruction[2] not in reg_code:
+            return(True, "Invalid register used at line : " + str(ith_instruction[-1])) 
+
+    else:
+        if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or "FLAGS" in ith_instruction[1:]:
+            return (True,"Invalid register name used at line : " + str(ith_instruction[len(ith_instruction)-1]))
 
     return (False,"")
 
@@ -331,7 +332,7 @@ for i in range(0,len(instruction_list)) :
         flag = True
         break
 
-    elif 'hlt' in ith_instruction and i == len(instruction_list)-1:
+    elif 'hlt' in ith_instruction and i == len(instruction_list)-1 and ith_instruction[0][-1] != ":":
         if len(ith_instruction) != 2:
             error_msg = 'Wrong hlt syntax in line : ' + str(ith_instruction[len(ith_instruction)-1])
             flag = True
@@ -522,11 +523,11 @@ for i in range(0,len(instruction_list)) :
                     break
                 #otherwise generating binary
                 #i is given as input 0-based indexing
-                bin_list = JumpIfEqual(i-var_count)
+                bin_list = JumpIfEqual(i-var_count+1)
 
         if ith_instruction[0] == "jgt" :
                 #checking for errors
-                temp = typeEerrors()
+                temp = typeEerrors(ith_instruction)
                 flag = temp[0]
                 #if error found
                 if(flag) : 
@@ -534,7 +535,7 @@ for i in range(0,len(instruction_list)) :
                     break
                 #otherwise generating binary
                 #i is given as input 0-based indexing
-                bin_list = JumpIfGreater(i-var_count)
+                bin_list = JumpIfGreater(i-var_count+1)
 
         if ith_instruction[0] == "jlt" :
                 #checking for errors
@@ -546,7 +547,7 @@ for i in range(0,len(instruction_list)) :
                     break
                 #otherwise generating binary
                 #i is given as input 0-based indexing
-                bin_list = JumpIfLess(i-var_count)
+                bin_list = JumpIfLess(i-var_count+1)
 
         if ith_instruction[0] == "jmp" :
                 #checking for errors
@@ -558,7 +559,7 @@ for i in range(0,len(instruction_list)) :
                     break
                 #otherwise generating binary
                 #i is given as input 0-based indexing
-                bin_list = UncondJump(i-var_count)
+                bin_list = UncondJump(i-var_count+1)
 
         
         
@@ -583,7 +584,7 @@ for i in range(0,len(instruction_list)) :
         temp = []      ##variable store
         temp.extend(ith_instruction[1])
         for e in temp:
-            if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_'):
+            if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_') and (ord(e) not in range(ord('0'), ord('9')+1)):
                 error_msg = 'Wrong variable name at line : ' + str(ith_instruction[len(ith_instruction)-1])
                 flag = True
                 break
@@ -610,7 +611,7 @@ for i in range(0,len(instruction_list)) :
         temp = []
         temp.extend(ith_instruction[0][0:-1])
         for e in temp:
-            if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_'):
+            if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_') and (ord(e) not in range(ord('0'), ord('9')+1)):
                 error_msg = 'Wrong label name at line : ' + str(ith_instruction[len(ith_instruction)-1])
                 flag = True
                 break
@@ -821,11 +822,11 @@ for i in range(0,len(instruction_list)) :
                         break
                     #otherwise generating binary
                     #i is given as input 0-based indexing
-                    bin_list = JumpIfEqual(i-var_count)
+                    bin_list = JumpIfEqual(i-var_count+1)
 
             if ith_instruction[0] == "jgt" :
                     #checking for errors
-                    temp = typeEerrors()
+                    temp = typeEerrors(ith_instruction)
                     flag = temp[0]
                     #if error found
                     if(flag) : 
@@ -833,7 +834,7 @@ for i in range(0,len(instruction_list)) :
                         break
                     #otherwise generating binary
                     #i is given as input 0-based indexing
-                    bin_list = JumpIfGreater(i-var_count)
+                    bin_list = JumpIfGreater(i-var_count+1)
 
             if ith_instruction[0] == "jlt" :
                     #checking for errors
@@ -845,7 +846,7 @@ for i in range(0,len(instruction_list)) :
                         break
                     #otherwise generating binary
                     #i is given as input 0-based indexing
-                    bin_list = JumpIfLess(i-var_count)
+                    bin_list = JumpIfLess(i-var_count+1)
 
             if ith_instruction[0] == "jmp" :
                     #checking for errors
@@ -857,7 +858,7 @@ for i in range(0,len(instruction_list)) :
                         break
                     #otherwise generating binary
                     #i is given as input 0-based indexing
-                    bin_list = UncondJump(i-var_count)
+                    bin_list = UncondJump(i-var_count+1)
             
             labels[label_name] = i
             
@@ -877,7 +878,7 @@ for i in range(0,len(instruction_list)) :
 #error for checking stack limit
 #if we dont encounter any previous errors we check for stack limit
 if not flag : 
-    if(line_count+var_count>256) : 
+    if(line_count>256) : 
         error_line = "Cant have more than 256 instructions"
         flag = True
 
