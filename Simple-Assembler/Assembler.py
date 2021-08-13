@@ -550,6 +550,11 @@ for i in range(0,len(instruction_list)) :
             flag = True
             break 
 
+        if ith_instruction[1] in variables:
+            error_msg = 'Error while declaring same variable again: ' + ith_instruction[-1]
+            flag = True
+            break
+
         variables[ith_instruction[1]] = i
         var_count += 1
 
@@ -584,9 +589,10 @@ for i in range(0,len(instruction_list)) :
                 break
 
             else : 
-                bin_list = Halt();
+                bin_list = Halt()
 
         elif ith_instruction[1] in opcode:
+            ith_instruction = ith_instruction[1:]
         #Type-A instructions checking
             if ith_instruction[0] == "add" :
                 #checking for errors
@@ -829,7 +835,7 @@ if not flag :
 #adding exception for invalid syntax
 if flag : 
     #raise Exception("Invalid Syntax in Line : " ,error_line)
-    print('error')
+    print(error_msg)
 else:
     for x in bin_list:
         print(x)
