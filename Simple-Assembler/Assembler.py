@@ -85,34 +85,40 @@ def Add(a,b,c) :
     return bin_list
 
 def Sub(a,b,c):
+    ## Appending the opcode of subtract instruction along with the syntax supposed for the subtract instruction
     bin_list.append(opcode["sub"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
 def Mul(a,b,c):
+    ## Appending the opcode of multiply instruction along with the syntax supposed for the multiplication instruction
     bin_list.append(opcode["mul"][0] +"00"+reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
 def Xor(a,b,c):
+    ## Appending the opcode of xor instruction along with the syntax supposed for the xor instruction
     bin_list.append(opcode["xor"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
 def Or(a,b,c):
+    ## Appending the opcode of or instruction along with the syntax supposed for the or instruction
     bin_list.append(opcode["or"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
 def And(a,b,c):
+    ## Appending the opcode of and instruction along with the syntax supposed for the and instruction
     bin_list.append(opcode["and"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
 ##Type A ends
 ##Type B starts
 def MovImm(a,b):
-    Bin = bin(b[1:])                              ##CHECK FOR MOV , SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
-    if(len(Bin[2:])<8):
-        Zeroes = 8-len(Bin[2:])
+    Bin = bin(b[1:])                              ##CHECK FOR MOV,SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
+    if(len(Bin[2:])<8):                           ##CHECKING IF LENGTH OF binary less than 8
+        Zeroes = 8-len(Bin[2:])                   ##Adding appropriate number of zeroes if required
         Imm = str("0"*Zeroes) + Bin[2:]
     else:
-        Imm = Bin[2:]
+        Imm = Bin[2:]                             ##Otherwise ignoring
+    ## Appending the opcode of and instruction along with the syntax supposed for the and instruction
     bin_list.append(opcode["mov"][0] + reg_code[a] + Imm)
     return bin_list
 
@@ -123,6 +129,8 @@ def RightShift(a,b):
         Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
+
+    ## Appending the opcode of Right shift instruction along with the syntax supposed for the right shift instruction
     bin_list.append(opcode["rs"][0] + reg_code[a] + Imm)
     return bin_list
 
@@ -133,6 +141,8 @@ def LeftShift(a,b):
         Imm = str("0"*Zeroes) + Bin[2:]
     else:
         Imm = Bin[2:]
+
+    ## Appending the opcode of left shift instruction along with the syntax supposed for the left shift instruction
     bin_list.append(opcode["ls"][0] + reg_code[a] + Imm)
     return bin_list
 
@@ -141,18 +151,22 @@ def LeftShift(a,b):
  ##TYPE C starts
 def MovReg(a,b):
     bin_list.append(opcode["mov"][0] + "00000" + reg_code[a] + reg_code[b])
+    ## Appending the opcode of move value to register instruction along with the syntax supposed for it
     return bin_list
 
 def Div(a,b):
     bin_list.append(opcode["div"][0] + "00000" + reg_code[a] + reg_code[b])
+    ## Appending the opcode of division instruction along with the syntax supposed for the division instruction
     return bin_list
 
 def Invert(a,b):
     bin_list.append(opcode["not"][0] + "00000" + reg_code[a] + reg_code[b])
+    ## Appending the opcode of invert instruction along with the syntax supposed for the division instruction
     return bin_list
 
 def Compare(a,b):
     bin_list.append(opcode["cmp"][0] + "00000" + reg_code[a] + reg_code[b])
+    ## Appending the opcode of compare instruction along with the syntax supposed for the compare instruction
     return bin_list
 #TYPE C ends
 
@@ -178,9 +192,9 @@ def Store(a,b):
     return bin_list
 ##TYPE D ends
 ##TYPE E starts
-def UncondJump(address):     ##line_count = -1 // 00000000
-    Bin = bin(address)
-    if(len(Bin[2:])<8):
+def UncondJump(address):     ## Line count = -1 -> Address 00000000
+    Bin = bin(address)       ## Convert the given linecount into binary and check for length and make appropriate additions
+    if(len(Bin[2:])<8):      ## to convert the binary into 8 bit format
         Zeroes = 8-len(Bin[2:])
         Imm = str("0"*Zeroes) + Bin[2:]
     else:
@@ -236,8 +250,8 @@ opcode = {"add":("00000","A"),"sub":("00001","A"),"mov":("00010","B"),"mov":("00
 reg_code = {'R0':'000', 'R1':'001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}  #codes of registers
 reg_data = {'R0':0, 'R1':0, 'R2':0, 'R3':0, 'R4':0, 'R5':0, 'R6':0, 'FLAGS':[0,0,0,0]}  #decimal values of R0-R6 registers and V,L,G,E bits of flags register
 
-variables = {}  #dictionary to store memory and values of variables
-labels = {}  #dictionary to store memory of labels
+variables = {}  # Dictionary to store memory and values of variables
+labels = {}  # Dictionary to store memory of labels
 
 ##line_count contains the total number of lines excluding the blank lines including the variable declarations
 line_count = 0
