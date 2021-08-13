@@ -89,7 +89,7 @@ def Sub(a,b,c):
     return bin_list
 
 def Mul(a,b,c):
-    bin_list.append(opcode["mul"][0] +"00"reg_code[a] + reg_code[b] + reg_code[c])
+    bin_list.append(opcode["mul"][0] +"00"+reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
 def Xor(a,b,c):
@@ -293,13 +293,130 @@ for i in range(0,len(instruction_list)) :
     #check for errors in general instructon
     elif ith_instruction[0] in opcode:
         #put error checks on all the operation functions here
+        #Type-A instructions checking
         if ith_instruction[0] == "add" :
+             #checking for errors
             temp = typeAerrors(ith_instruction)
             flag = temp[0]
+            #if error found
             if(flag) : break
-            bin_list = add(ith_instruction[1],ith_instruction[2],ith_instruction[3])
-            
+            #otherwise generating binary
+            bin_list = Add(ith_instruction[1],ith_instruction[2],ith_instruction[3])
 
+        if ith_instruction[0] == "sub" :
+             #checking for errors
+            temp = typeAerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = Sub(ith_instruction[1],ith_instruction[2],ith_instruction[3])
+
+        if ith_instruction[0] == "mul" :
+            #checking for errors
+            temp = typeAerrors(ith_instruction)
+            flag = temp[0]
+             #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = Mul(ith_instruction[1],ith_instruction[2],ith_instruction[3]) 
+
+        if ith_instruction[0] == "xor" :
+            #checking for errors
+            temp = typeAerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = Xor(ith_instruction[1],ith_instruction[2],ith_instruction[3])
+
+        if ith_instruction[0] == "or" :
+            #checking for errors
+            temp = typeAerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = Or(ith_instruction[1],ith_instruction[2],ith_instruction[3])
+
+        if ith_instruction[0] == "and" :
+            #checking for errors
+            temp = typeAerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = And(ith_instruction[1],ith_instruction[2],ith_instruction[3])
+        
+    #Type-A ends Type-B checking begins
+        if ith_instruction[0] == "mov" and ith_instruction[2] in reg_code:
+            #checking for errors
+            temp = typeBerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = MovImm(ith_instruction[1],ith_instruction[2])
+
+        if ith_instruction[0] == "rs" :
+            #checking for errors
+            temp = typeBerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = RightShift(ith_instruction[1],ith_instruction[2])
+        
+        if ith_instruction[0] == "ls" :
+            #checking for errors
+            temp = typeBerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = LeftShift(ith_instruction[1],ith_instruction[2])
+
+    #Type-B ends Type-C checking begins
+        if ith_instruction[0] == "mov" :
+            #checking for errors
+            temp = typeCerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = MovReg(ith_instruction[1],ith_instruction[2])
+        
+        if ith_instruction[0] == "div" :
+            #checking for errors
+            temp = typeCerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = Div(ith_instruction[1],ith_instruction[2])
+        
+        if ith_instruction[0] == "not" :
+            #checking for errors
+            temp = typeCerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = Invert(ith_instruction[1],ith_instruction[2])
+
+        if ith_instruction[0] == "cmp" :
+            #checking for errors
+            temp = typeCerrors(ith_instruction)
+            flag = temp[0]
+            #if error found
+            if(flag) : break
+            #otherwise generating binary
+            bin_list = Compare(ith_instruction[1],ith_instruction[2])
+
+    #Type-B ends Type-C checking begins
+    
+        
+        
     #check for errors in variables
     elif ith_instruction[0] == "var":
         if last_var:
