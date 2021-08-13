@@ -85,10 +85,12 @@ def Add(a,b,c) :
     return bin_list
 
 def Sub(a,b,c):
+    ## Appending the opcode of subtract instruction along with the syntax supposed for the subtract instruction
     bin_list.append(opcode["sub"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
 def Mul(a,b,c):
+    ## Appending the opcode of multiply instruction along with the syntax supposed for the subtract instruction
     bin_list.append(opcode["mul"][0] +"00"+reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
@@ -107,7 +109,7 @@ def And(a,b,c):
 ##Type A ends
 ##Type B starts
 def MovImm(a,b):
-    Bin = bin(b[1:])                              ##CHECK FOR MOV , SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
+    Bin = bin(b[1:])                              ##CHECK FOR MOV,SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
         Imm = str("0"*Zeroes) + Bin[2:]
