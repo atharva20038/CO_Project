@@ -235,7 +235,7 @@ def JumpIfEqual(address):
 
 ##TYPE F starts
 def Halt():
-    bin_list.append(opcode["hlt"][0])
+    bin_list.append(opcode["hlt"][0] + 11*"0")
     return bin_list
 ##TYPE F ends
 
@@ -586,14 +586,14 @@ for i in range(0,len(instruction_list)) :
         temp.extend(ith_instruction[0][0:-1])
         for e in temp:
             if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_'):
-                error_msg = 'Wrong label name at line : ' + ith_instruction[len(ith_instruction)-1]
+                error_msg = 'Wrong label name at line : ' + str(ith_instruction[len(ith_instruction)-1])
                 flag = True
                 break
         if flag:
             break
 
         if ith_instruction[0][0:-1] in variables:
-            error_line = 'Variable name used as label name at line : ' + ith_instruction[len(ith_instruction)-1]
+            error_line = 'Variable name used as label name at line : ' + str(ith_instruction[len(ith_instruction)-1])
             flag = True
             break
 
@@ -601,12 +601,12 @@ for i in range(0,len(instruction_list)) :
 
         if 'hlt' == ith_instruction[1]:
             if len(ith_instruction) != 3:
-                error_msg = 'Wrong syntax at line : ' + ith_instruction[len(ith_instruction)-1]
+                error_msg = 'Wrong syntax at line : ' + str(ith_instruction[len(ith_instruction)-1])
                 flag = True
                 break
             
             elif i != len(instruction_list)-1:
-                error_msg = 'hlt not last instruction at line : ' + ith_instruction[len(ith_instruction)-1]
+                error_msg = 'hlt not last instruction at line : ' + str(ith_instruction[len(ith_instruction)-1])
                 flag = True
                 break
 
