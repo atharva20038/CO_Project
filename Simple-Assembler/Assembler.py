@@ -24,6 +24,10 @@ def typeBerrors(ith_instruction):
         return (True,"Doesnot match the required number of tokens at line : " + str(ith_instruction[len(ith_instruction)-1]))
                 
             #check if correct register names are used
+
+    # if ith_instruction[0] == 'mov' and (ith_instruction[1] not in reg_code or ith_instruction[1] == 'FLAGS' or ith_instruction[2] not in reg_code):
+    #     return(True, "Invalid register used at line : " + str(ith_instruction[-1])) 
+
     if ith_instruction[1] not in reg_code or "FLAGS" in ith_instruction[1:]:
         
         return (True,"Invalid register name used at line : " + str(ith_instruction[len(ith_instruction)-1])) 
@@ -268,10 +272,14 @@ while True:
         if line == '':  
             blank_included_count += 1
             continue
-        
-        instruction_list.append(line.split())
+
+        line = line.split()
+        instruction_list.append(line)
         #included blanks in the count
         
+        if line[0][-1] == ':':
+            labels[line[0][:-1]] = line_count
+
         blank_included_count += 1
         instruction_list[line_count].append(blank_included_count)
         line_count += 1
@@ -286,7 +294,10 @@ while True:
 #     if line == '':
 #         break
     
-#     instruction_list.append(line.split())
+#     line = line.split()
+#     instruction_list.append(line)
+#     if line[0][-1] == ":":
+#         labels[line[0][:-1]] = line_count
 #     blank_included_count += 1
 #     instruction_list[line_count].append(blank_included_count)
 #     line_count += 1
