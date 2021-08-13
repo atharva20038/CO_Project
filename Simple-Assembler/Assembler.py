@@ -90,19 +90,22 @@ def Sub(a,b,c):
     return bin_list
 
 def Mul(a,b,c):
-    ## Appending the opcode of multiply instruction along with the syntax supposed for the subtract instruction
+    ## Appending the opcode of multiply instruction along with the syntax supposed for the multiplication instruction
     bin_list.append(opcode["mul"][0] +"00"+reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
 def Xor(a,b,c):
+    ## Appending the opcode of xor instruction along with the syntax supposed for the xor instruction
     bin_list.append(opcode["xor"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
 def Or(a,b,c):
+    ## Appending the opcode of or instruction along with the syntax supposed for the or instruction
     bin_list.append(opcode["or"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
 def And(a,b,c):
+    ## Appending the opcode of and instruction along with the syntax supposed for the and instruction
     bin_list.append(opcode["and"][0] + "00" + reg_code[a] + reg_code[b] + reg_code[c])
     return bin_list
 
@@ -110,11 +113,12 @@ def And(a,b,c):
 ##Type B starts
 def MovImm(a,b):
     Bin = bin(b[1:])                              ##CHECK FOR MOV,SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
-    if(len(Bin[2:])<8):
-        Zeroes = 8-len(Bin[2:])
+    if(len(Bin[2:])<8):                           ##CHECKING IF LENGTH OF binary less than 8
+        Zeroes = 8-len(Bin[2:])                   ##Adding appropriate number of zeroes if required
         Imm = str("0"*Zeroes) + Bin[2:]
     else:
-        Imm = Bin[2:]
+        Imm = Bin[2:]                             ##Otherwise ignoring
+    ## Appending the opcode of and instruction along with the syntax supposed for the and instruction
     bin_list.append(opcode["mov"][0] + reg_code[a] + Imm)
     return bin_list
 
