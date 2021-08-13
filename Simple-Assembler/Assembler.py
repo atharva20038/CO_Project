@@ -77,7 +77,7 @@ def typeEerrors(ith_instruction):
     return (False,"")
 
 #add function
-//Type A starts
+##Type A starts
 def Add(a,b,c) : 
     #complete add function keeping in mind all possibilities and add the binary code to the list and add update the values in the resgisters
     
@@ -177,7 +177,7 @@ def Store(a,b):
     bin_list.append(opcode["st"][0] + reg_code[a] + Imm)
     return bin_list
 ##TYPE D ends
-
+##TYPE E starts
 def UncondJump(address):     ##line_count = -1 // 00000000
     Bin = bin(address)
     if(len(Bin[2:])<8):
