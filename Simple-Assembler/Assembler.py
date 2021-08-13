@@ -409,17 +409,17 @@ for i in range(0,len(instruction_list)) :
             bin_list = And(ith_instruction[1],ith_instruction[2],ith_instruction[3])
         
     #Type-A ends Type-B checking begins
-        if ith_instruction[0] == "mov" and ith_instruction[2] in reg_code:
+        if ith_instruction[0] == "mov" and ith_instruction[2][0] == '$':
             #checking for errors
-            temp = typeCerrors(ith_instruction)
+            temp = typeBerrors(ith_instruction)
             flag = temp[0]
             #if error found
             if(flag) : 
                 error_msg = temp[1]
                 break
             #otherwise generating binary
-            bin_list = MovReg(ith_instruction[1],ith_instruction[2])
-
+            bin_list = MovImm(ith_instruction[1],ith_instruction[2])
+        
         if ith_instruction[0] == "rs" :
             #checking for errors
             temp = typeBerrors(ith_instruction)
@@ -443,16 +443,18 @@ for i in range(0,len(instruction_list)) :
             bin_list = LeftShift(ith_instruction[1],ith_instruction[2])
 
     #Type-B ends Type-C checking begins
-        if ith_instruction[0] == "mov" :
+        if ith_instruction[0] == "mov" and ith_instruction[2] in reg_code :
             #checking for errors
-            temp = typeBerrors(ith_instruction)
+            temp = typeCerrors(ith_instruction)
             flag = temp[0]
             #if error found
             if(flag) : 
                 error_msg = temp[1]
                 break
             #otherwise generating binary
-            bin_list = MovImm(ith_instruction[1],ith_instruction[2])
+            bin_list = MovReg(ith_instruction[1],ith_instruction[2])
+
+        
         
         if ith_instruction[0] == "div" :
             #checking for errors
@@ -707,16 +709,16 @@ for i in range(0,len(instruction_list)) :
                 bin_list = And(ith_instruction[1],ith_instruction[2],ith_instruction[3])
             
         #Type-A ends Type-B checking begins
-            if ith_instruction[0] == "mov" and ith_instruction[2] in reg_code:
+            if ith_instruction[0] == "mov" and ith_instruction[2][0] == '$':
                 #checking for errors
-                temp = typeCerrors(ith_instruction)
+                temp = typeBerrors(ith_instruction)
                 flag = temp[0]
                 #if error found
                 if(flag) : 
                     error_msg = temp[1]
                     break
                 #otherwise generating binary
-                bin_list = MovReg(ith_instruction[1],ith_instruction[2])
+                bin_list = MovImm(ith_instruction[1],ith_instruction[2])
 
             if ith_instruction[0] == "rs" :
                 #checking for errors
@@ -741,16 +743,17 @@ for i in range(0,len(instruction_list)) :
                 bin_list = LeftShift(ith_instruction[1],ith_instruction[2])
 
         #Type-B ends Type-C checking begins
-            if ith_instruction[0] == "mov" :
+            if ith_instruction[0] == "mov" and ith_instruction[2] in reg_code :
                 #checking for errors
-                temp = typeBerrors(ith_instruction)
+                temp = typeCerrors(ith_instruction)
                 flag = temp[0]
                 #if error found
                 if(flag) : 
                     error_msg = temp[1]
                     break
                 #otherwise generating binary
-                bin_list = MovImm(ith_instruction[1],ith_instruction[2])
+                bin_list = MovReg(ith_instruction[1],ith_instruction[2])
+            
             
             if ith_instruction[0] == "div" :
                 #checking for errors
