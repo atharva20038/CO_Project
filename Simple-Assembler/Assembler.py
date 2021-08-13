@@ -29,7 +29,7 @@ def typeBerrors(ith_instruction):
         return (True,"Invalid register name used at line : " + str(ith_instruction[len(ith_instruction)-1])) 
 
     #check if 3rd token is a valid immediate value
-    if ith_instruction[2][0] != "$" or ith_instruction[1:].isnumeric() or int(ith_instruction[2][1:]) > 255 or int(ith_instruction[2][1:]) < 0:
+    if ith_instruction[2][0] != "$" or ith_instruction[2][1:].isnumeric() or int(ith_instruction[2][1:]) > 255 or int(ith_instruction[2][1:]) < 0:
         
         return (True,"Invalid Immediate Value Syntax at line : " + str(ith_instruction[len(ith_instruction)-1]))
 
@@ -112,7 +112,7 @@ def And(a,b,c):
 ##Type A ends
 ##Type B starts
 def MovImm(a,b):
-    Bin = bin(b[1:])                              ##CHECK FOR MOV,SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
+    Bin = bin(int(b[1:]))                              ##CHECK FOR MOV,SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
     if(len(Bin[2:])<8):                           ##CHECKING IF LENGTH OF binary less than 8
         Zeroes = 8-len(Bin[2:])                   ##Adding appropriate number of zeroes if required
         Imm = str("0"*Zeroes) + Bin[2:]
@@ -123,7 +123,7 @@ def MovImm(a,b):
     return bin_list
 
 def RightShift(a,b):
-    Bin = bin(b[1:])
+    Bin = bin(int(b[1:]))
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
         Imm = str("0"*Zeroes) + Bin[2:]
