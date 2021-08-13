@@ -240,6 +240,7 @@ variables = {}  #dictionary to store memory and values of variables
 labels = {}  #dictionary to store memory of labels
 
 line_count = 0
+blank_included_count = 0
 instruction_list = []
 bin_list = []
 #exact line number of the code 
@@ -248,11 +249,14 @@ while True:
     try : 
         line = input().strip()
         if line == '':  
+            blank_included_count += 1
             continue
         
         instruction_list.append(line.split())
-        instruction_list[line_count].append(line_count)
+        #included blanks in the count
+        instruction_list[line_count].append(blank_included_count)
         line_count += 1
+        blank_included_count += 1
     except : 
         break
 
@@ -272,21 +276,20 @@ for i in range(0,len(instruction_list)) :
     ith_instruction = instruction_list[i]
 
     if i == len(instruction_list)-1 and  'hlt' not in ith_instruction:
-        error_msg = 'hlt not present'
-        error_line = i
+        error_msg = 'hlt not present in line : ' + i
         flag = True
         break
 
     elif 'hlt' in ith_instruction and i != len(instruction_list)-1:
-        error_line = i
-        error_msg = 'hlt not last statement'
+        
+        error_msg = 'hlt not last statement in line : ' + i
         flag = True
         break
 
     elif 'hlt' in ith_instruction and i == len(instruction_list)-1:
         if len(ith_instruction != 2):
-            error_line = 'Wrong hlt syntax'
-            error_line = i
+            error_msg = 'Wrong hlt syntax in line : ' + i
+            
             flag = True
             break
 
@@ -299,7 +302,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeAerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = Add(ith_instruction[1],ith_instruction[2],ith_instruction[3])
 
@@ -308,7 +313,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeAerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = Sub(ith_instruction[1],ith_instruction[2],ith_instruction[3])
 
@@ -317,7 +324,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeAerrors(ith_instruction)
             flag = temp[0]
              #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = Mul(ith_instruction[1],ith_instruction[2],ith_instruction[3]) 
 
@@ -326,7 +335,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeAerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = Xor(ith_instruction[1],ith_instruction[2],ith_instruction[3])
 
@@ -335,7 +346,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeAerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = Or(ith_instruction[1],ith_instruction[2],ith_instruction[3])
 
@@ -344,7 +357,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeAerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = And(ith_instruction[1],ith_instruction[2],ith_instruction[3])
         
@@ -354,7 +369,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeBerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = MovImm(ith_instruction[1],ith_instruction[2])
 
@@ -363,7 +380,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeBerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) :
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = RightShift(ith_instruction[1],ith_instruction[2])
         
@@ -372,7 +391,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeBerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = LeftShift(ith_instruction[1],ith_instruction[2])
 
@@ -382,7 +403,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeCerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = MovReg(ith_instruction[1],ith_instruction[2])
         
@@ -391,7 +414,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeCerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = Div(ith_instruction[1],ith_instruction[2])
         
@@ -400,7 +425,9 @@ for i in range(0,len(instruction_list)) :
             temp = typeCerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = Invert(ith_instruction[1],ith_instruction[2])
 
@@ -409,28 +436,100 @@ for i in range(0,len(instruction_list)) :
             temp = typeCerrors(ith_instruction)
             flag = temp[0]
             #if error found
-            if(flag) : break
+            if(flag) : 
+                error_msg = temp[1]
+                break
             #otherwise generating binary
             bin_list = Compare(ith_instruction[1],ith_instruction[2])
 
-    #Type-B ends Type-C checking begins
-    
+    #Type-C ends Type-D checking begins
+        if ith_instruction[0] == "st" :
+                #checking for errors
+                temp = typeDerrors(ith_instruction)
+                flag = temp[0]
+                #if error found
+                if(flag) : 
+                    error_msg = temp[1]
+                    break
+                #otherwise generating binary
+                bin_list = Store(ith_instruction[1],ith_instruction[2])
+        
+        if ith_instruction[0] == "ld" :
+                #checking for errors
+                temp = typeDerrors(ith_instruction)
+                flag = temp[0]
+                #if error found
+                if(flag) : 
+                    error_msg = temp[1]
+                    break
+                #otherwise generating binary
+                bin_list = Load(ith_instruction[1],ith_instruction[2])
+    #Type-D ends Type-E checking begins
+        if ith_instruction[0] == "je" :
+                #checking for errors
+                temp = typeEerrors(ith_instruction)
+                flag = temp[0]
+                #if error found
+                if(flag) : 
+                    error_msg = temp[1]
+                    break
+                #otherwise generating binary
+                #i is given as input 0-based indexing
+                bin_list = JumpIfEqual(i)
+
+        if ith_instruction[0] == "jgt" :
+                #checking for errors
+                temp = typeEerrors()
+                flag = temp[0]
+                #if error found
+                if(flag) : 
+                    error_msg = temp[1]
+                    break
+                #otherwise generating binary
+                #i is given as input 0-based indexing
+                bin_list = JumpIfGreater(i)
+
+        if ith_instruction[0] == "jlt" :
+                #checking for errors
+                temp = typeEerrors(ith_instruction)
+                flag = temp[0]
+                #if error found
+                if(flag) : 
+                    error_msg = temp[1]
+                    break
+                #otherwise generating binary
+                #i is given as input 0-based indexing
+                bin_list = JumpIfLess(i)
+
+        if ith_instruction[0] == "jmp" :
+                #checking for errors
+                temp = typeEerrors(ith_instruction)
+                flag = temp[0]
+                #if error found
+                if(flag) : 
+                    error_msg = temp[1]
+                    break
+                #otherwise generating binary
+                #i is given as input 0-based indexing
+                bin_list = UncondJump(i)
+
+        
+        
         
         
     #check for errors in variables
     elif ith_instruction[0] == "var":
         if last_var:
-            error_msg = 'Variable not declared at top'
+            error_msg = 'Variable not declared at top at line : ' + i
             flag = True
-            error_line = i
+            
             break
         
         if not last_var and instruction_list[i+1][0] != 'var':
             last_var = True
 
         if len(ith_instruction) != 3:
-            error_msg = 'Wrong syntax while declaring variable'
-            error_line = i
+            error_msg = 'Wrong syntax while declaring variable : ' + i
             flag = True
             break
 
@@ -438,8 +537,7 @@ for i in range(0,len(instruction_list)) :
         temp.extend(ith_instruction[1])
         for e in temp:
             if (ord(e) not in range(ord('a'), ord('z')+1)) or (ord(e) not in range(ord('A'), ord('Z')+1)) or ord(e) != ord('_'):
-                error_msg = 'Wrong variable name'
-                error_line = i
+                error_msg = 'Wrong variable name at line : ' + i
                 flag = True
                 break
         if flag:
@@ -454,16 +552,14 @@ for i in range(0,len(instruction_list)) :
         temp.extend(ith_instruction[0][0:-1])
         for e in temp:
             if (ord(e) not in range(ord('a'), ord('z')+1)) or (ord(e) not in range(ord('A'), ord('Z')+1)) or ord(e) != ord('_'):
-                error_msg = 'Wrong label name'
-                error_line = i
+                error_msg = 'Wrong label name at line : ' + i
                 flag = True
                 break
         if flag:
             break
 
         if ith_instruction[0][0:-1] in variables:
-            error_line = 'Variable name used as label name'
-            error_line = i
+            error_line = 'Variable name used as label name at line : ' + i
             flag = True
             break
 
@@ -471,18 +567,20 @@ for i in range(0,len(instruction_list)) :
 
         if 'hlt' == ith_instruction[1]:
             if len(ith_instruction != 3):
-                error_msg = 'Wrong syntax'
-                error_line = i
+                error_msg = 'Wrong syntax at line : ' + i
                 flag = True
                 break
             
             elif i != len(instruction_list)-1:
-                error_msg = 'hlt not last instruction'
-                error_line = i
+                error_msg = 'hlt not last instruction at line : ' + i
                 flag = True
                 break
 
+            else : 
+                bin.append(opcode["hlt"] + "0"*11)
+
         elif ith_instruction[1] in opcode:
+            ########## Problem -1  : incomplete error message
             print()
             
         else:
@@ -493,9 +591,11 @@ for i in range(0,len(instruction_list)) :
 
 
 #error for checking stack limit
-if(line_count+var_count>256) : 
-    error = "Cant have more than 256 instructions"
-    flag = True
+#if we dont encounter any previous errors we check for stack limit
+if not flag : 
+    if(line_count+var_count>256) : 
+        error_line = "Cant have more than 256 instructions"
+        flag = True
 
  
 
