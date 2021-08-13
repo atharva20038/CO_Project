@@ -8,12 +8,12 @@
 def typeAerrors(ith_instruction) : 
     if len(ith_instruction) != 5: #checks if instruction is correct
         
-        return (True,"Does Not Match the Required Number Of Tokens at line : " + ith_instruction[len(ith_instruction)-1])
+        return (True,"Does Not Match the Required Number Of Tokens at line : " + str(ith_instruction[len(ith_instruction)-1]))
                 
     #check if correct register names are used
     if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or ith_instruction[3] not in reg_code or "FLAGS" in ith_instruction[1:]:
         
-        return(True,"Invalid Register Name Used at line : " + ith_instruction[len(ith_instruction)-1])
+        return(True,"Invalid Register Name Used at line : " + str(ith_instruction[len(ith_instruction)-1]))
 
     return (False,"")
 
@@ -21,17 +21,17 @@ def typeAerrors(ith_instruction) :
 def typeBerrors(ith_instruction):
     if len(ith_instruction) != 4: #checks if instruction is correct
         
-        return (True,"Doesnot match the required number of tokens at line : " + ith_instruction[len(ith_instruction)-1])
+        return (True,"Doesnot match the required number of tokens at line : " + str(ith_instruction[len(ith_instruction)-1]))
                 
             #check if correct register names are used
     if ith_instruction[1] not in reg_code or "FLAGS" in ith_instruction[1:]:
         
-        return (True,"Invalid register name used at line : " + ith_instruction[len(ith_instruction)-1]) 
+        return (True,"Invalid register name used at line : " + str(ith_instruction[len(ith_instruction)-1])) 
 
     #check if 3rd token is a valid immediate value
     if ith_instruction[2][0] != "$" or ith_instruction[1:].isnumeric() or int(ith_instruction[2][1:]) > 255 or int(ith_instruction[2][1:]) < 0:
         
-        return (True,"Invalid Immediate Value Syntax at line : " + ith_instruction[len(ith_instruction)-1])
+        return (True,"Invalid Immediate Value Syntax at line : " + str(ith_instruction[len(ith_instruction)-1]))
 
     return (False,"")
 
@@ -39,12 +39,12 @@ def typeBerrors(ith_instruction):
 def typeCerrors(ith_instruction):
     if len(ith_instruction) != 4: #checks if instruction is correct
         
-        return (True,"Doesnot match the required number of tokens at line : " + ith_instruction[len(ith_instruction)-1])
+        return (True,"Doesnot match the required number of tokens at line : " + str(ith_instruction[len(ith_instruction)-1]))
                 
             #check if correct register names are used
     if ith_instruction[1] not in reg_code or ith_instruction[2] not in reg_code or "FLAGS" in ith_instruction[1:]:
         
-        return (True,"Invalid register name used at line : " + ith_instruction[len(ith_instruction)-1])
+        return (True,"Invalid register name used at line : " + str(ith_instruction[len(ith_instruction)-1]))
 
     return (False,"")
 
@@ -52,15 +52,15 @@ def typeCerrors(ith_instruction):
 def typeDerrors(ith_instruction):
     if len(ith_instruction) != 4:
         
-        return (True,"Doesnot match the required number of tokens at line : " + ith_instruction[len(ith_instruction)-1])
+        return (True,"Doesnot match the required number of tokens at line : " + str(ith_instruction[len(ith_instruction)-1]))
 
     if ith_instruction[1] not in reg_code or ith_instruction[1] == "FLAGS":
         
-        return (True,"Invalid register name used at line : " + ith_instruction[len(ith_instruction)-1])
+        return (True,"Invalid register name used at line : " + str(ith_instruction[len(ith_instruction)-1]))
 
     if ith_instruction[2] not in variables:
         
-        return (True,"Variable Not Declared at line : " + ith_instruction[len(ith_instruction)-1])
+        return (True,"Variable Not Declared at line : " + str(ith_instruction[len(ith_instruction)-1]))
 
     return (False,"")
 
@@ -68,11 +68,11 @@ def typeDerrors(ith_instruction):
 def typeEerrors(ith_instruction):
     if len(ith_instruction) != 3:
         
-        return (True,"Doesnot match the required number of tokens at line : " + ith_instruction[len(ith_instruction)-1])
+        return (True,"Doesnot match the required number of tokens at line : " + str(ith_instruction[len(ith_instruction)-1]))
     
     if ith_instruction[1] not in labels:
         
-        return (True,"Label Not Declared at line : " + ith_instruction[len(ith_instruction)-1])
+        return (True,"Label Not Declared at line : " + str(ith_instruction[len(ith_instruction)-1]))
 
     return (False,"")
 
@@ -257,9 +257,10 @@ while True:
         
         instruction_list.append(line.split())
         #included blanks in the count
-        line_count += 1
+        
         blank_included_count += 1
         instruction_list[line_count].append(blank_included_count)
+        line_count += 1
         
         
     except : 
@@ -284,20 +285,19 @@ for i in range(0,len(instruction_list)) :
     #Checking For Halt Errors
 
     if i == len(instruction_list)-1 and  'hlt' not in ith_instruction:
-        error_msg = 'hlt not present in line : ' + ith_instruction[len(ith_instruction)-1]
+        error_msg = 'hlt not present in line : ' + str(ith_instruction[len(ith_instruction)-1])
         flag = True
         break
 
     elif 'hlt' in ith_instruction and i != len(instruction_list)-1:
         
-        error_msg = 'hlt not last statement in line : ' + ith_instruction[len(ith_instruction)-1]
+        error_msg = 'hlt not last statement in line : ' + str(ith_instruction[len(ith_instruction)-1])
         flag = True
         break
 
     elif 'hlt' in ith_instruction and i == len(instruction_list)-1:
-        if len(ith_instruction != 2):
-            error_msg = 'Wrong hlt syntax in line : ' + ith_instruction[len(ith_instruction)-1]
-            
+        if len(ith_instruction) != 2:
+            error_msg = 'Wrong hlt syntax in line : ' + str(ith_instruction[len(ith_instruction)-1])
             flag = True
             break
 
@@ -528,7 +528,7 @@ for i in range(0,len(instruction_list)) :
     #check for errors in variables
     elif ith_instruction[0] == "var":
         if last_var:
-            error_msg = 'Variable not declared at top at line : ' + ith_instruction[len(ith_instruction)-1]
+            error_msg = 'Variable not declared at top at line : ' + str(ith_instruction[len(ith_instruction)-1])
             flag = True
             
             break
@@ -537,27 +537,27 @@ for i in range(0,len(instruction_list)) :
             last_var = True
 
         if len(ith_instruction) != 3:
-            error_msg = 'Wrong syntax while declaring variable : ' + ith_instruction[len(ith_instruction)-1]
+            error_msg = 'Wrong syntax while declaring variable : ' + str(ith_instruction[len(ith_instruction)-1])
             flag = True
             break
 
         temp = []      ##variable store
         temp.extend(ith_instruction[1])
         for e in temp:
-            if (ord(e) not in range(ord('a'), ord('z')+1)) or (ord(e) not in range(ord('A'), ord('Z')+1)) or ord(e) != ord('_'):
-                error_msg = 'Wrong variable name at line : ' + ith_instruction[len(ith_instruction)-1]
+            if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_'):
+                error_msg = 'Wrong variable name at line : ' + str(ith_instruction[len(ith_instruction)-1])
                 flag = True
                 break
         if flag:
             break
 
         if ith_instruction[1] in opcode:
-            error_msg = 'Variable name Can\'t be an operation code: ' + ith_instruction[-1]
+            error_msg = 'Variable name Can\'t be an operation code: ' + str(ith_instruction[-1])
             flag = True
             break 
 
         if ith_instruction[1] in variables:
-            error_msg = 'Error while declaring same variable again: ' + ith_instruction[-1]
+            error_msg = 'Error while declaring same variable again: ' + str(ith_instruction[-1])
             flag = True
             break
 
@@ -571,7 +571,7 @@ for i in range(0,len(instruction_list)) :
         temp = []
         temp.extend(ith_instruction[0][0:-1])
         for e in temp:
-            if (ord(e) not in range(ord('a'), ord('z')+1)) or (ord(e) not in range(ord('A'), ord('Z')+1)) or ord(e) != ord('_'):
+            if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_'):
                 error_msg = 'Wrong label name at line : ' + ith_instruction[len(ith_instruction)-1]
                 flag = True
                 break
@@ -586,7 +586,7 @@ for i in range(0,len(instruction_list)) :
         #label is followed a general instruction. So add all the error checks for instructions above here also
 
         if 'hlt' == ith_instruction[1]:
-            if len(ith_instruction != 3):
+            if len(ith_instruction) != 3:
                 error_msg = 'Wrong syntax at line : ' + ith_instruction[len(ith_instruction)-1]
                 flag = True
                 break
@@ -822,14 +822,14 @@ for i in range(0,len(instruction_list)) :
             labels[label_name] = i
             
         else:
-            error_msg = 'Wrong command after label at line : ' + ith_instruction[len(ith_instruction)-1]
+            error_msg = 'Wrong command after label at line : ' + str(ith_instruction[len(ith_instruction)-1])
             
             flag = True
             break
 
     else : 
         flag = True
-        error_msg = "Syntax Error on line : " + ith_instruction[len(ith_instruction)-1]
+        error_msg = "Syntax Error on line : " + str(ith_instruction[len(ith_instruction)-1])
 
     
 
