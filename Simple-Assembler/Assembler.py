@@ -550,6 +550,11 @@ for i in range(0,len(instruction_list)) :
             flag = True
             break 
 
+        if ith_instruction[1] in variables:
+            error_msg = 'Error while declaring same variable again: ' + ith_instruction[-1]
+            flag = True
+            break
+
         variables[ith_instruction[1]] = i
         var_count += 1
 
