@@ -584,9 +584,10 @@ for i in range(0,len(instruction_list)) :
                 break
 
             else : 
-                bin_list = Halt();
+                bin_list = Halt()
 
         elif ith_instruction[1] in opcode:
+            ith_instruction = ith_instruction[1:]
         #Type-A instructions checking
             if ith_instruction[0] == "add" :
                 #checking for errors
