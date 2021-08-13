@@ -454,7 +454,7 @@ for i in range(0,len(instruction_list)) :
                     error_msg = temp[1]
                     break
                 #otherwise generating binary
-                bin_list = Store(ith_instruction[1],)
+                bin_list = Store(ith_instruction[1],variables[ith_instruction[2]]+line_count)
         
         if ith_instruction[0] == "ld" :
                 #checking for errors
@@ -465,7 +465,7 @@ for i in range(0,len(instruction_list)) :
                     error_msg = temp[1]
                     break
                 #otherwise generating binary
-                bin_list = Load(ith_instruction[1],)
+                bin_list = Load(ith_instruction[1],variables[ith_instruction[2]]+line_count)
     #Type-D ends Type-E checking begins
         if ith_instruction[0] == "je" :
                 #checking for errors
@@ -743,7 +743,7 @@ for i in range(0,len(instruction_list)) :
                         error_msg = temp[1]
                         break
                     #otherwise generating binary
-                    bin_list = Store(ith_instruction[1],ith_instruction[2])
+                    bin_list = Store(ith_instruction[1],variables[ith_instruction[2]]+line_count)
             
             if ith_instruction[0] == "ld" :
                     #checking for errors
@@ -754,7 +754,7 @@ for i in range(0,len(instruction_list)) :
                         error_msg = temp[1]
                         break
                     #otherwise generating binary
-                    bin_list = Load(ith_instruction[1],ith_instruction[2])
+                    bin_list = Load(ith_instruction[1],variables[ith_instruction[2]]+line_count)
         #Type-D ends Type-E checking begins
             if ith_instruction[0] == "je" :
                     #checking for errors
