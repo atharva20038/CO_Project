@@ -835,7 +835,7 @@ if not flag :
 #adding exception for invalid syntax
 if flag : 
     #raise Exception("Invalid Syntax in Line : " ,error_line)
-    print('error')
+    print(error_msg)
 else:
     for x in bin_list:
         print(x)
