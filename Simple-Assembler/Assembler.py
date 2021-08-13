@@ -29,7 +29,7 @@ def typeBerrors(ith_instruction):
         return (True,"Invalid register name used at line : " + str(ith_instruction[len(ith_instruction)-1])) 
 
     #check if 3rd token is a valid immediate value
-    if ith_instruction[2][0] != "$" or ith_instruction[2][1:].isnumeric() or int(ith_instruction[2][1:]) > 255 or int(ith_instruction[2][1:]) < 0:
+    if ith_instruction[2][0] != "$" or not ith_instruction[2][1:].isnumeric() or int(ith_instruction[2][1:]) > 255 or int(ith_instruction[2][1:]) < 0:
         
         return (True,"Invalid Immediate Value Syntax at line : " + str(ith_instruction[len(ith_instruction)-1]))
 
@@ -123,7 +123,7 @@ def MovImm(a,b):
     return bin_list
 
 def RightShift(a,b):
-    Bin = bin(int(b[1:]))
+    Bin = bin(b[1:])
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
         Imm = str("0"*Zeroes) + Bin[2:]
@@ -281,6 +281,17 @@ while True:
         break
 
 
+# while True:
+#     line = input().strip()
+#     if line == '':
+#         break
+    
+#     instruction_list.append(line.split())
+#     blank_included_count += 1
+#     instruction_list[line_count].append(blank_included_count)
+#     line_count += 1
+
+
 flag = False
 error_line = 0
 error_msg = ''
@@ -314,9 +325,10 @@ for i in range(0,len(instruction_list)) :
             error_msg = 'Wrong hlt syntax in line : ' + str(ith_instruction[len(ith_instruction)-1])
             flag = True
             break
+        bin_list = Halt()
 
     #check for errors in general instructon
-    elif ith_instruction[0] in opcode:
+    if ith_instruction[0] in opcode:
         #put error checks on all the operation functions here
         #Type-A instructions checking
         if ith_instruction[0] == "add" :
