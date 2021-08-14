@@ -279,6 +279,9 @@ while True:
         #included blanks in the count
         
         if line[0][-1] == ':':
+            if line[0][:-1] in labels.keys() : 
+                flag = True
+                error_msg = "Label already declared"
             labels[line[0][:-1]] = line_count
 
         blank_included_count += 1
@@ -315,334 +318,35 @@ var_count = 0
 
 
 #adding instructions and raising exceptions otherwise
+if not flag : 
 
-for i in range(0,len(instruction_list)) : 
-    ith_instruction = instruction_list[i]
+    for i in range(0,len(instruction_list)) : 
+        ith_instruction = instruction_list[i]
 
-    #Checking For Halt Errors
+        #Checking For Halt Errors
 
-    if i == len(instruction_list)-1 and  'hlt' not in ith_instruction:
-        error_msg = 'hlt not present in line : ' + str(ith_instruction[len(ith_instruction)-1])
-        flag = True
-        break
-
-    elif 'hlt' in ith_instruction and i != len(instruction_list)-1:
-        
-        error_msg = 'hlt not last statement in line : ' + str(ith_instruction[len(ith_instruction)-1])
-        flag = True
-        break
-
-    elif 'hlt' in ith_instruction and i == len(instruction_list)-1 and ith_instruction[0][-1] != ":":
-        if len(ith_instruction) != 2:
-            error_msg = 'Wrong hlt syntax in line : ' + str(ith_instruction[len(ith_instruction)-1])
+        if i == len(instruction_list)-1 and  'hlt' not in ith_instruction:
+            error_msg = 'hlt not present in line : ' + str(ith_instruction[len(ith_instruction)-1])
             flag = True
             break
-        bin_list = Halt()
 
-    #check for errors in general instructon
-    if ith_instruction[0] in opcode:
-        #put error checks on all the operation functions here
-        #Type-A instructions checking
-        if ith_instruction[0] == "add" :
-             #checking for errors
-            temp = typeAerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = Add(ith_instruction[1],ith_instruction[2],ith_instruction[3])
-
-        if ith_instruction[0] == "sub" :
-             #checking for errors
-            temp = typeAerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = Sub(ith_instruction[1],ith_instruction[2],ith_instruction[3])
-
-        if ith_instruction[0] == "mul" :
-            #checking for errors
-            temp = typeAerrors(ith_instruction)
-            flag = temp[0]
-             #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = Mul(ith_instruction[1],ith_instruction[2],ith_instruction[3]) 
-
-        if ith_instruction[0] == "xor" :
-            #checking for errors
-            temp = typeAerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = Xor(ith_instruction[1],ith_instruction[2],ith_instruction[3])
-
-        if ith_instruction[0] == "or" :
-            #checking for errors
-            temp = typeAerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = Or(ith_instruction[1],ith_instruction[2],ith_instruction[3])
-
-        if ith_instruction[0] == "and" :
-            #checking for errors
-            temp = typeAerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = And(ith_instruction[1],ith_instruction[2],ith_instruction[3])
-        
-    #Type-A ends Type-B checking begins
-        if ith_instruction[0] == "mov" and ith_instruction[2][0] == '$':
-            #checking for errors
-            temp = typeBerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = MovImm(ith_instruction[1],ith_instruction[2])
-        
-        if ith_instruction[0] == "rs" :
-            #checking for errors
-            temp = typeBerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) :
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = RightShift(ith_instruction[1],ith_instruction[2])
-        
-        if ith_instruction[0] == "ls" :
-            #checking for errors
-            temp = typeBerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = LeftShift(ith_instruction[1],ith_instruction[2])
-
-    #Type-B ends Type-C checking begins
-        if ith_instruction[0] == "mov" and ith_instruction[2] in reg_code :
-            #checking for errors
-            temp = typeCerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = MovReg(ith_instruction[1],ith_instruction[2])
-
-        
-        
-        if ith_instruction[0] == "div" :
-            #checking for errors
-            temp = typeCerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = Div(ith_instruction[1],ith_instruction[2])
-        
-        if ith_instruction[0] == "not" :
-            #checking for errors
-            temp = typeCerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = Invert(ith_instruction[1],ith_instruction[2])
-
-        if ith_instruction[0] == "cmp" :
-            #checking for errors
-            temp = typeCerrors(ith_instruction)
-            flag = temp[0]
-            #if error found
-            if(flag) : 
-                error_msg = temp[1]
-                break
-            #otherwise generating binary
-            bin_list = Compare(ith_instruction[1],ith_instruction[2])
-
-    #Type-C ends Type-D checking begins
-        if ith_instruction[0] == "st" :
-                #checking for errors
-                temp = typeDerrors(ith_instruction)
-                flag = temp[0]
-                #if error found
-                if(flag) : 
-                    error_msg = temp[1]
-                    break
-                #otherwise generating binary
-                bin_list = Store(ith_instruction[1],variables[ith_instruction[2]]+line_count-var_count)
-        
-        if ith_instruction[0] == "ld" :
-                #checking for errors
-                temp = typeDerrors(ith_instruction)
-                flag = temp[0]
-                #if error found
-                if(flag) : 
-                    error_msg = temp[1]
-                    break
-                #otherwise generating binary
-                bin_list = Load(ith_instruction[1],variables[ith_instruction[2]]+line_count-var_count)
-    #Type-D ends Type-E checking begins
-        if ith_instruction[0] == "je" :
-                #checking for errors
-                temp = typeEerrors(ith_instruction)
-                flag = temp[0]
-                #if error found
-                if(flag) : 
-                    error_msg = temp[1]
-                    break
-                #otherwise generating binary
-                #i is given as input 0-based indexing
-                bin_list = JumpIfEqual(i-var_count+1)
-
-        if ith_instruction[0] == "jgt" :
-                #checking for errors
-                temp = typeEerrors(ith_instruction)
-                flag = temp[0]
-                #if error found
-                if(flag) : 
-                    error_msg = temp[1]
-                    break
-                #otherwise generating binary
-                #i is given as input 0-based indexing
-                bin_list = JumpIfGreater(i-var_count+1)
-
-        if ith_instruction[0] == "jlt" :
-                #checking for errors
-                temp = typeEerrors(ith_instruction)
-                flag = temp[0]
-                #if error found
-                if(flag) : 
-                    error_msg = temp[1]
-                    break
-                #otherwise generating binary
-                #i is given as input 0-based indexing
-                bin_list = JumpIfLess(i-var_count+1)
-
-        if ith_instruction[0] == "jmp" :
-                #checking for errors
-                temp = typeEerrors(ith_instruction)
-                flag = temp[0]
-                #if error found
-                if(flag) : 
-                    error_msg = temp[1]
-                    break
-                #otherwise generating binary
-                #i is given as input 0-based indexing
-                bin_list = UncondJump(i-var_count+1)
-
-        
-        
-        
-        
-    #check for errors in variables
-    elif ith_instruction[0] == "var":
-        if last_var:
-            error_msg = 'Variable not declared at top at line : ' + str(ith_instruction[len(ith_instruction)-1])
-            flag = True
+        elif 'hlt' in ith_instruction and i != len(instruction_list)-1:
             
-            break
-        
-        if not last_var and instruction_list[i+1][0] != 'var':
-            last_var = True
-
-        if len(ith_instruction) != 3:
-            error_msg = 'Wrong syntax while declaring variable : ' + str(ith_instruction[len(ith_instruction)-1])
+            error_msg = 'hlt not last statement in line : ' + str(ith_instruction[len(ith_instruction)-1])
             flag = True
             break
 
-        temp = []      ##variable store
-        temp.extend(ith_instruction[1])
-        for e in temp:
-            if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_') and (ord(e) not in range(ord('0'), ord('9')+1)):
-                error_msg = 'Wrong variable name at line : ' + str(ith_instruction[len(ith_instruction)-1])
+        elif 'hlt' in ith_instruction and i == len(instruction_list)-1 and ith_instruction[0][-1] != ":":
+            if len(ith_instruction) != 2:
+                error_msg = 'Wrong hlt syntax in line : ' + str(ith_instruction[len(ith_instruction)-1])
                 flag = True
                 break
-        if flag:
-            break
+            bin_list = Halt()
 
-        if ith_instruction[1] in opcode:
-            error_msg = 'Variable name Can\'t be an operation code: ' + str(ith_instruction[-1])
-            flag = True
-            break 
-
-        if ith_instruction[1] in variables:
-            error_msg = 'Error while declaring same variable again: ' + str(ith_instruction[-1])
-            flag = True
-            break
-
-        variables[ith_instruction[1]] = i
-        var_count += 1
-
-
-
-    #checks for error in label declaration
-    elif ith_instruction[0][-1] == ":":
-        temp = []
-        temp.extend(ith_instruction[0][0:-1])
-        for e in temp:
-            if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_') and (ord(e) not in range(ord('0'), ord('9')+1)):
-                error_msg = 'Wrong label name at line : ' + str(ith_instruction[len(ith_instruction)-1])
-                flag = True
-                break
-        if flag:
-            break
-
-        if ith_instruction[0][0:-1] in variables:
-            error_line = 'Variable name used as label name at line : ' + str(ith_instruction[len(ith_instruction)-1])
-            flag = True
-            break
-
-        #label is followed a general instruction. So add all the error checks for instructions above here also
-
-        if 'hlt' == ith_instruction[1]:
-            if len(ith_instruction) != 3:
-                error_msg = 'Wrong syntax at line : ' + str(ith_instruction[len(ith_instruction)-1])
-                flag = True
-                break
-            
-            elif i != len(instruction_list)-1:
-                error_msg = 'hlt not last instruction at line : ' + str(ith_instruction[len(ith_instruction)-1])
-                flag = True
-                break
-
-            else : 
-                bin_list = Halt()
-
-        elif ith_instruction[1] in opcode:
-            label_name = ith_instruction[0][0:-1]
-            ith_instruction = ith_instruction[1:]
-        #Type-A instructions checking
+        #check for errors in general instructon
+        if ith_instruction[0] in opcode:
+            #put error checks on all the operation functions here
+            #Type-A instructions checking
             if ith_instruction[0] == "add" :
                 #checking for errors
                 temp = typeAerrors(ith_instruction)
@@ -720,7 +424,7 @@ for i in range(0,len(instruction_list)) :
                     break
                 #otherwise generating binary
                 bin_list = MovImm(ith_instruction[1],ith_instruction[2])
-
+            
             if ith_instruction[0] == "rs" :
                 #checking for errors
                 temp = typeBerrors(ith_instruction)
@@ -754,6 +458,7 @@ for i in range(0,len(instruction_list)) :
                     break
                 #otherwise generating binary
                 bin_list = MovReg(ith_instruction[1],ith_instruction[2])
+
             
             
             if ith_instruction[0] == "div" :
@@ -859,18 +564,317 @@ for i in range(0,len(instruction_list)) :
                     #otherwise generating binary
                     #i is given as input 0-based indexing
                     bin_list = UncondJump(i-var_count+1)
-            
-            labels[label_name] = i
-            
-        else:
-            error_msg = 'Wrong command after label at line : ' + str(ith_instruction[len(ith_instruction)-1])
-            
-            flag = True
-            break
 
-    else : 
-        flag = True
-        error_msg = "Syntax Error on line : " + str(ith_instruction[len(ith_instruction)-1])
+            
+            
+            
+            
+        #check for errors in variables
+        elif ith_instruction[0] == "var":
+            if last_var:
+                error_msg = 'Variable not declared at top at line : ' + str(ith_instruction[len(ith_instruction)-1])
+                flag = True
+                
+                break
+            
+            if not last_var and instruction_list[i+1][0] != 'var':
+                last_var = True
+
+            if len(ith_instruction) != 3:
+                error_msg = 'Wrong syntax while declaring variable : ' + str(ith_instruction[len(ith_instruction)-1])
+                flag = True
+                break
+
+            temp = []      ##variable store
+            temp.extend(ith_instruction[1])
+            for e in temp:
+                if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_') and (ord(e) not in range(ord('0'), ord('9')+1)):
+                    error_msg = 'Wrong variable name at line : ' + str(ith_instruction[len(ith_instruction)-1])
+                    flag = True
+                    break
+            if flag:
+                break
+
+            if ith_instruction[1] in opcode:
+                error_msg = 'Variable name Can\'t be an operation code: ' + str(ith_instruction[-1])
+                flag = True
+                break 
+
+            if ith_instruction[1] in variables:
+                error_msg = 'Error while declaring same variable again: ' + str(ith_instruction[-1])
+                flag = True
+                break
+
+            variables[ith_instruction[1]] = i
+            var_count += 1
+
+
+
+        #checks for error in label declaration
+        elif ith_instruction[0][-1] == ":":
+            temp = []
+            temp.extend(ith_instruction[0][0:-1])
+            for e in temp:
+                if (ord(e) not in range(ord('a'), ord('z')+1)) and (ord(e) not in range(ord('A'), ord('Z')+1)) and ord(e) != ord('_') and (ord(e) not in range(ord('0'), ord('9')+1)):
+                    error_msg = 'Wrong label name at line : ' + str(ith_instruction[len(ith_instruction)-1])
+                    flag = True
+                    break
+            if flag:
+                break
+
+            if ith_instruction[0][0:-1] in variables:
+                error_line = 'Variable name used as label name at line : ' + str(ith_instruction[len(ith_instruction)-1])
+                flag = True
+                break
+
+            #label is followed a general instruction. So add all the error checks for instructions above here also
+
+            if 'hlt' == ith_instruction[1]:
+                if len(ith_instruction) != 3:
+                    error_msg = 'Wrong syntax at line : ' + str(ith_instruction[len(ith_instruction)-1])
+                    flag = True
+                    break
+                
+                elif i != len(instruction_list)-1:
+                    error_msg = 'hlt not last instruction at line : ' + str(ith_instruction[len(ith_instruction)-1])
+                    flag = True
+                    break
+
+                else : 
+                    bin_list = Halt()
+
+            elif ith_instruction[1] in opcode:
+                label_name = ith_instruction[0][0:-1]
+                ith_instruction = ith_instruction[1:]
+            #Type-A instructions checking
+                if ith_instruction[0] == "add" :
+                    #checking for errors
+                    temp = typeAerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = Add(ith_instruction[1],ith_instruction[2],ith_instruction[3])
+
+                if ith_instruction[0] == "sub" :
+                    #checking for errors
+                    temp = typeAerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = Sub(ith_instruction[1],ith_instruction[2],ith_instruction[3])
+
+                if ith_instruction[0] == "mul" :
+                    #checking for errors
+                    temp = typeAerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = Mul(ith_instruction[1],ith_instruction[2],ith_instruction[3]) 
+
+                if ith_instruction[0] == "xor" :
+                    #checking for errors
+                    temp = typeAerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = Xor(ith_instruction[1],ith_instruction[2],ith_instruction[3])
+
+                if ith_instruction[0] == "or" :
+                    #checking for errors
+                    temp = typeAerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = Or(ith_instruction[1],ith_instruction[2],ith_instruction[3])
+
+                if ith_instruction[0] == "and" :
+                    #checking for errors
+                    temp = typeAerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = And(ith_instruction[1],ith_instruction[2],ith_instruction[3])
+                
+            #Type-A ends Type-B checking begins
+                if ith_instruction[0] == "mov" and ith_instruction[2][0] == '$':
+                    #checking for errors
+                    temp = typeBerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = MovImm(ith_instruction[1],ith_instruction[2])
+
+                if ith_instruction[0] == "rs" :
+                    #checking for errors
+                    temp = typeBerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) :
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = RightShift(ith_instruction[1],ith_instruction[2])
+                
+                if ith_instruction[0] == "ls" :
+                    #checking for errors
+                    temp = typeBerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = LeftShift(ith_instruction[1],ith_instruction[2])
+
+            #Type-B ends Type-C checking begins
+                if ith_instruction[0] == "mov" and ith_instruction[2] in reg_code :
+                    #checking for errors
+                    temp = typeCerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = MovReg(ith_instruction[1],ith_instruction[2])
+                
+                
+                if ith_instruction[0] == "div" :
+                    #checking for errors
+                    temp = typeCerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = Div(ith_instruction[1],ith_instruction[2])
+                
+                if ith_instruction[0] == "not" :
+                    #checking for errors
+                    temp = typeCerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = Invert(ith_instruction[1],ith_instruction[2])
+
+                if ith_instruction[0] == "cmp" :
+                    #checking for errors
+                    temp = typeCerrors(ith_instruction)
+                    flag = temp[0]
+                    #if error found
+                    if(flag) : 
+                        error_msg = temp[1]
+                        break
+                    #otherwise generating binary
+                    bin_list = Compare(ith_instruction[1],ith_instruction[2])
+
+            #Type-C ends Type-D checking begins
+                if ith_instruction[0] == "st" :
+                        #checking for errors
+                        temp = typeDerrors(ith_instruction)
+                        flag = temp[0]
+                        #if error found
+                        if(flag) : 
+                            error_msg = temp[1]
+                            break
+                        #otherwise generating binary
+                        bin_list = Store(ith_instruction[1],variables[ith_instruction[2]]+line_count-var_count)
+                
+                if ith_instruction[0] == "ld" :
+                        #checking for errors
+                        temp = typeDerrors(ith_instruction)
+                        flag = temp[0]
+                        #if error found
+                        if(flag) : 
+                            error_msg = temp[1]
+                            break
+                        #otherwise generating binary
+                        bin_list = Load(ith_instruction[1],variables[ith_instruction[2]]+line_count-var_count)
+            #Type-D ends Type-E checking begins
+                if ith_instruction[0] == "je" :
+                        #checking for errors
+                        temp = typeEerrors(ith_instruction)
+                        flag = temp[0]
+                        #if error found
+                        if(flag) : 
+                            error_msg = temp[1]
+                            break
+                        #otherwise generating binary
+                        #i is given as input 0-based indexing
+                        bin_list = JumpIfEqual(i-var_count+1)
+
+                if ith_instruction[0] == "jgt" :
+                        #checking for errors
+                        temp = typeEerrors(ith_instruction)
+                        flag = temp[0]
+                        #if error found
+                        if(flag) : 
+                            error_msg = temp[1]
+                            break
+                        #otherwise generating binary
+                        #i is given as input 0-based indexing
+                        bin_list = JumpIfGreater(i-var_count+1)
+
+                if ith_instruction[0] == "jlt" :
+                        #checking for errors
+                        temp = typeEerrors(ith_instruction)
+                        flag = temp[0]
+                        #if error found
+                        if(flag) : 
+                            error_msg = temp[1]
+                            break
+                        #otherwise generating binary
+                        #i is given as input 0-based indexing
+                        bin_list = JumpIfLess(i-var_count+1)
+
+                if ith_instruction[0] == "jmp" :
+                        #checking for errors
+                        temp = typeEerrors(ith_instruction)
+                        flag = temp[0]
+                        #if error found
+                        if(flag) : 
+                            error_msg = temp[1]
+                            break
+                        #otherwise generating binary
+                        #i is given as input 0-based indexing
+                        bin_list = UncondJump(i-var_count+1)
+                
+                labels[label_name] = i
+                
+            else:
+                error_msg = 'Wrong command after label at line : ' + str(ith_instruction[len(ith_instruction)-1])
+                
+                flag = True
+                break
+
+        else : 
+            flag = True
+            error_msg = "Syntax Error on line : " + str(ith_instruction[len(ith_instruction)-1])
 
     
 
