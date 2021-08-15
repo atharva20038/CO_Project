@@ -82,11 +82,12 @@ def typeEerrors(ith_instruction):
 
     return (False,"")
 
-#add function
+##Functions for appending in bin list
 ##Type A starts
 def Add(a,b,c) : 
-    #complete add function keeping in mind all possibilities and add the binary code to the list and add update the values in the resgisters
-    
+    #complete add function keeping in mind all possibilities and add the binary code to the list and 
+    #add update the values in the registers
+
     bin_list.append(opcode["add"][0]+"00"+reg_code[a]+reg_code[b]+reg_code[c]) #binary value of instruction 
     return bin_list
 
@@ -118,7 +119,7 @@ def And(a,b,c):
 ##Type A ends
 ##Type B starts
 def MovImm(a,b):
-    Bin = bin(int(b[1:]))                              ##CHECK FOR MOV,SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
+    Bin = bin(int(b[1:]))                         ##CHECK FOR MOV,SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
     if(len(Bin[2:])<8):                           ##CHECKING IF LENGTH OF binary less than 8
         Zeroes = 8-len(Bin[2:])                   ##Adding appropriate number of zeroes if required
         Imm = str("0"*Zeroes) + Bin[2:]
@@ -152,9 +153,9 @@ def LeftShift(a,b):
     bin_list.append(opcode["ls"][0] + reg_code[a] + Imm)
     return bin_list
 
- ##TYPE B ends
+##TYPE B ends
 
- ##TYPE C starts
+##TYPE C starts
 def MovReg(a,b):
     bin_list.append(opcode["mov"][1][0] + "00000" + reg_code[a] + reg_code[b])
     ## Appending the opcode of move value to register instruction along with the syntax supposed for it
@@ -177,6 +178,7 @@ def Compare(a,b):
 #TYPE C ends
 
 #TYPE D starts
+##Load and store functions
 def Load(a,b):
     Bin = bin(b)
     if(len(Bin[2:])<8):
@@ -208,7 +210,7 @@ def UncondJump(address):     ## Line count = -1 -> Address 00000000
     bin_list.append(opcode["jmp"][0] + "000"+ Imm)
     return bin_list
 
-def JumpIfLess(address):
+def JumpIfLess(address):      ## Similar to Unconditional jump
     Bin = bin(address)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
@@ -218,7 +220,7 @@ def JumpIfLess(address):
     bin_list.append(opcode["jlt"][0]+"000"+ Imm)
     return bin_list
 
-def JumpIfGreater(address):
+def JumpIfGreater(address):   ## Similar to Unconditional jump
     Bin = bin(address)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
@@ -228,7 +230,7 @@ def JumpIfGreater(address):
     bin_list.append(opcode["jgt"][0]+"000"+ Imm)
     return bin_list
 
-def JumpIfEqual(address):
+def JumpIfEqual(address):     ## Similar to Unconditional jump
     Bin = bin(address)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
@@ -240,10 +242,11 @@ def JumpIfEqual(address):
 ##TYPE E ends
 
 ##TYPE F starts
-def Halt():
+def Halt():                    
     bin_list.append(opcode["hlt"][0] + 11*"0")
     return bin_list
 ##TYPE F ends
+##bin_list completed
 
 
 #lists and dictionaries to store codes and data
@@ -265,7 +268,7 @@ line_count = 0
 blank_included_count = 0
 
 instruction_list = []
-bin_list = []
+bin_list = []   ## list storing opcodes along with registers in accordance with their types
 #exact line number of the code 
 
 while True:
