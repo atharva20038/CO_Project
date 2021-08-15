@@ -151,9 +151,9 @@ def LeftShift(a,b):
     bin_list.append(opcode["ls"][0] + reg_code[a] + Imm)
     return bin_list
 
- ##TYPE B ends
+##TYPE B ends
 
- ##TYPE C starts
+##TYPE C starts
 def MovReg(a,b):
     bin_list.append(opcode["mov"][1][0] + "00000" + reg_code[a] + reg_code[b])
     ## Appending the opcode of move value to register instruction along with the syntax supposed for it
@@ -243,6 +243,7 @@ def Halt():
     bin_list.append(opcode["hlt"][0] + 11*"0")
     return bin_list
 ##TYPE F ends
+##bin_list completed
 
 
 #lists and dictionaries to store codes and data
