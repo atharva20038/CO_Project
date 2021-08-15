@@ -3,6 +3,7 @@
 #Nipun Gupta
 #Shantanu Dixit
 
+#final-check done
 
 #Type-A errors 
 def typeAerrors(ith_instruction) : 
