@@ -81,11 +81,12 @@ def typeEerrors(ith_instruction):
 
     return (False,"")
 
-
+##Functions for appending in bin list
 ##Type A starts
 def Add(a,b,c) : 
-    #complete add function keeping in mind all possibilities and add the binary code to the list and add update the values in the resgisters
-    
+    #complete add function keeping in mind all possibilities and add the binary code to the list and 
+    #add update the values in the registers
+
     bin_list.append(opcode["add"][0]+"00"+reg_code[a]+reg_code[b]+reg_code[c]) #binary value of instruction 
     return bin_list
 
@@ -265,7 +266,7 @@ line_count = 0
 blank_included_count = 0
 
 instruction_list = []
-bin_list = []
+bin_list = []   ## list storing opcodes along with registers in accordance with their types
 #exact line number of the code 
 
 while True:
