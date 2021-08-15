@@ -81,7 +81,7 @@ def typeEerrors(ith_instruction):
 
     return (False,"")
 
-#add function
+
 ##Type A starts
 def Add(a,b,c) : 
     #complete add function keeping in mind all possibilities and add the binary code to the list and add update the values in the resgisters
@@ -117,7 +117,7 @@ def And(a,b,c):
 ##Type A ends
 ##Type B starts
 def MovImm(a,b):
-    Bin = bin(int(b[1:]))                              ##CHECK FOR MOV,SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
+    Bin = bin(int(b[1:]))                         ##CHECK FOR MOV,SINCE 2 MOV ARE PRESENT IN INSTRUCTION LIST
     if(len(Bin[2:])<8):                           ##CHECKING IF LENGTH OF binary less than 8
         Zeroes = 8-len(Bin[2:])                   ##Adding appropriate number of zeroes if required
         Imm = str("0"*Zeroes) + Bin[2:]
