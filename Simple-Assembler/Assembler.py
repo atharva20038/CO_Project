@@ -177,6 +177,7 @@ def Compare(a,b):
 #TYPE C ends
 
 #TYPE D starts
+##Load and store functions
 def Load(a,b):
     Bin = bin(b)
     if(len(Bin[2:])<8):
@@ -208,7 +209,7 @@ def UncondJump(address):     ## Line count = -1 -> Address 00000000
     bin_list.append(opcode["jmp"][0] + "000"+ Imm)
     return bin_list
 
-def JumpIfLess(address):
+def JumpIfLess(address):      ## Similar to Unconditional jump
     Bin = bin(address)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
@@ -218,7 +219,7 @@ def JumpIfLess(address):
     bin_list.append(opcode["jlt"][0]+"000"+ Imm)
     return bin_list
 
-def JumpIfGreater(address):
+def JumpIfGreater(address):   ## Similar to Unconditional jump
     Bin = bin(address)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
@@ -228,7 +229,7 @@ def JumpIfGreater(address):
     bin_list.append(opcode["jgt"][0]+"000"+ Imm)
     return bin_list
 
-def JumpIfEqual(address):
+def JumpIfEqual(address):     ## Similar to Unconditional jump
     Bin = bin(address)
     if(len(Bin[2:])<8):
         Zeroes = 8-len(Bin[2:])
@@ -240,7 +241,7 @@ def JumpIfEqual(address):
 ##TYPE E ends
 
 ##TYPE F starts
-def Halt():
+def Halt():                    
     bin_list.append(opcode["hlt"][0] + 11*"0")
     return bin_list
 ##TYPE F ends
