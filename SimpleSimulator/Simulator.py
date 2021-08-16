@@ -5,10 +5,29 @@
 
 #------------------functions------------------
 
+#printing function
+
+def PRINT():
+    pass
+
 #Type - A
 
 def add(code):
-    pass
+    reg1 = code[7:10]
+    reg2 = code[10:13]
+    reg3 = code[13:]
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+
+    sum = int(registers[reg2],2) + int(registers[reg3],2)
+    if sum > pow(2,16) - 1:
+        registers['111']['V'] = '1'
+        registers[reg1] = bin(sum)[-16:]
+    else:
+        temp = bin(sum)[2:]
+        registers[reg1] = 0 * (16 - len(temp)) + temp 
+    
+    PRINT()
 
 def sub(code):
     pass
@@ -77,11 +96,6 @@ def je(code):
 def hlt(code):
     pass
 
-#printing function
-
-def PRINT():
-    pass
-
 #------------global variables-------------
 
 #memory
@@ -102,30 +116,6 @@ registers = {
     '111': {'V':'0', 'L': '0', 'G': '0', 'E': '0'}
 }
 
-# #opcodes
-# opcodes = {
-#     '00000': add(),
-#     '00001': sub(),
-#     '00010': mov_imm(),
-#     '00011': mov_reg,
-#     '00100': ld(),
-#     '00101': st(),
-#     '00110': mul(),
-#     '00111': div(), 
-#     '01000': rs(),
-#     '01001': ls(),
-#     '01010': xor(),
-#     '01011': or_fun(),
-#     '01100': and_fun(),
-#     '01101': not_,
-#     '01110': cmp',
-#     '01111': jmp',
-#     '10000': jlt',
-#     '10001': jgt',
-#     '10010': je',
-#     '10011': hlt'
-# }
-
 #input - block
 
 #counter
@@ -143,3 +133,9 @@ while True:
 
 while pc<line_counter:
     code = memory[pc]
+
+
+#printing memory dump
+
+for x in memory:
+    print(x)
