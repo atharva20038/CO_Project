@@ -2,6 +2,7 @@
 #Atharva Mehta
 #Nipun Gupta
 #Shantanu Dixit
+
 #import matplotlib.pyplot as plt
 
 #------------------functions------------------
@@ -117,13 +118,13 @@ pc = 0
 
 #register values
 registers = {
-    '000': '00000000',
-    '001': '00000000', 
-    '010': '00000000',
-    '011': '00000000',
-    '100': '00000000',
-    '101': '00000000',
-    '110': '00000000',
+    '000': '0' * 16,
+    '001': '0' * 16, 
+    '010': '0' * 16,
+    '011': '0' * 16,
+    '100': '0' * 16,
+    '101': '0' * 16,
+    '110': '0' * 16,
     '111': {'V':'0', 'L': '0', 'G': '0', 'E': '0'}
 }
 
@@ -161,6 +162,7 @@ while pc<line_counter:
 for x in memory:
     print(x)
 
+#bonus plot
 # plt.plot(cycle_list, pc_list)
 # plt.xlabel('Cycle')
 # plt.ylabel('Memory address')
