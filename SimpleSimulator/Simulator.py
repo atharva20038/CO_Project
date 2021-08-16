@@ -3,8 +3,14 @@
 #Nipun Gupta
 #Shantanu Dixit
 
+
+#------------global variables-------------
+
 #memory
 memory = ['0000000000000000']*256
+
+#program counter
+pc = 0
 
 #register values
 registers = {
@@ -41,3 +47,27 @@ opcodes = {
     '10010': 'je',
     '10011': 'hlt'
 }
+
+#------------------functions------------------
+
+
+#input - block
+
+#counter
+line_counter = 0
+
+while True:
+    try:
+        instruction = input().strip()
+        memory[line_counter] = instruction
+        line_counter += 1
+    
+    except:
+        break
+
+
+while pc<line_counter:
+    code = memory[pc]
+
+    
+
