@@ -2,6 +2,7 @@
 #Atharva Mehta
 #Nipun Gupta
 #Shantanu Dixit
+#import matplotlib.pyplot as plt
 
 #------------------functions------------------
 
@@ -103,6 +104,11 @@ def hlt(code):
 
 #------------global variables-------------
 
+#variables for bonus question
+cycle = 1
+cycle_list = []
+pc_list = []
+
 #memory
 memory = ['0000000000000000']*256
 
@@ -137,6 +143,12 @@ while True:
 
 
 while pc<line_counter:
+
+    #updating bonus variables
+    cycle_list.append(cycle)
+    cycle += 1
+    pc_list.append(pc)
+
     code = memory[pc]
     op_code = code[0:5]
 
@@ -148,3 +160,9 @@ while pc<line_counter:
 
 for x in memory:
     print(x)
+
+# plt.plot(cycle_list, pc_list)
+# plt.xlabel('Cycle')
+# plt.ylabel('Memory address')
+# plt.title('Memory address v/s cycle')
+# plt.plot()
