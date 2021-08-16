@@ -8,7 +8,9 @@
 #printing function
 
 def PRINT():
-    pass
+    pc_bin = bin(pc)[2:]
+    pc_bin = 0 * (8-len(pc_bin)) + pc_bin
+    print(pc_bin, registers['000'], registers['001'], registers['010'], registers['011'], registers['100'], registers['101'], registers['110'], 0*12 + registers['111']['V'] + registers['111']['L'] + registers['111']['G'] + registers['111']['E'])
 
 #Type - A
 
@@ -20,14 +22,17 @@ def add(code):
     registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
 
     sum = int(registers[reg2],2) + int(registers[reg3],2)
+    #checking for overflow
     if sum > pow(2,16) - 1:
-        registers['111']['V'] = '1'
+        registers['111']['V'] = '1'   #overflow bit set if overflow occurs
         registers[reg1] = bin(sum)[-16:]
     else:
         temp = bin(sum)[2:]
         registers[reg1] = 0 * (16 - len(temp)) + temp 
     
     PRINT()
+
+    return 1  #increment of program counter
 
 def sub(code):
     pass
@@ -133,6 +138,10 @@ while True:
 
 while pc<line_counter:
     code = memory[pc]
+    op_code = code[0:5]
+
+    if op_code == '000':
+        pc += add(code)
 
 
 #printing memory dump
