@@ -2,7 +2,7 @@
 
 # Add command to run your program here
 
-python3 Stimulator.py 
+python3 Assembler.py 
 
 
 
