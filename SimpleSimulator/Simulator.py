@@ -159,9 +159,14 @@ while pc<line_counter:
     code = memory[pc]
     op_code = code[0:5]
 
-    if op_code == '000':
+    if op_code == '00000':
         pc += add(code)
-
+    
+    elif op_code == '00100':
+        pc += ld(code)
+    
+    elif op_code == '00101':
+        pc += st(code)
 
 #printing memory dump
 
