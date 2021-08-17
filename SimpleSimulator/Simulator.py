@@ -6,9 +6,9 @@
 import math as plt
 
 ####DOUBTS ---- To Be Addressed : 
-# For which all functions do we have to reset the registers?
+# For which all functions do we have to reset the registers? ---- we have to reset flag register before every operation. only in jump ops we have to read value of flags and then reset.
 # Invert Function would lead to a change in MSB? Or Would it lead to Overflow?
-# Do we have to check for overflow in functions like division?
+# Do we have to check for overflow in functions like division? ---- idts because it is mentioned only add sub and mul can set the overflow bit.
 
 #------------------functions------------------
 
