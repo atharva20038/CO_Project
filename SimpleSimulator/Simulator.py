@@ -3,7 +3,7 @@
 #Nipun Gupta
 #Shantanu Dixit
 
-#import matplotlib.pyplot as plt
+import math as plt
 
 ####DOUBTS ---- To Be Addressed : 
 # For which all functions do we have to reset the registers?
