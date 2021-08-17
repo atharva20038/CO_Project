@@ -71,6 +71,10 @@ def ls(code):
 #Type - C
 
 def mov_reg(code):
+    
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+
+
     r1 = code[10:13]
     r2 = code[13:16]
 
@@ -83,6 +87,9 @@ def mov_reg(code):
 
 
 def div(code):
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+
     r3 = code[10:13]
     r4 = code[13:16]
 
@@ -104,6 +111,8 @@ def inv(code):
     ###need confirmation on some part ....waiting for confirmation
     r1 = code[10:13]
     r2 = code[13:16]
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
     
     #we store the result in register-1 
     temp = ''
@@ -123,6 +132,9 @@ def inv(code):
 
 
 def cmp(code):
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+
     r1 = code[10:13]
     r2 = code[13:16]
     value1 = int(registers[r1],2)
@@ -141,12 +153,18 @@ def cmp(code):
 #Type - D
 
 def ld(code):
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+
     reg = code[5:8]
     mem_add = code[8:]
     registers[reg] = memory[int(mem_add, 2)]
     return (1,False)
 
 def st(code):
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+
     reg = code[5:8]
     mem_add = code[8:]
     memory[int(mem_add, 2)] = registers[reg]
@@ -156,23 +174,27 @@ def st(code):
 
 def jmp(code):
     address = code[8:16]
-    print(int(address,2))
+    
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
     return (int(address,2),True)
 
 def jlt(code):
     if registers['L'] == '1' : 
+        registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
         return (int(code[8:16],2),True)
     else : 
         return (1,False)
 
 def jgt(code):
     if registers['G'] == '1' : 
+        registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
         return (int(code[8:16],2),True)
     else : 
         return (1,False)
 
 def je(code):
     if registers['E'] == '1' : 
+        registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
         return (int(code[8:16],2),True)
     else : 
         return (1,False)
@@ -180,6 +202,7 @@ def je(code):
 #Type - F
 
 def hlt(code):
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
     return (line_counter+1,True)
 
 #------------global variables-------------
