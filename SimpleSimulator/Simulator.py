@@ -175,7 +175,7 @@ def je(code):
 #Type - F
 
 def hlt(code):
-    return (256,True)
+    return (line_counter+1,True)
 
 #------------global variables-------------
 
@@ -192,24 +192,24 @@ pc = 0
 
 #register values
 registers = {
-    # '000': '0' * 16,
-    # '001': '0' * 16, 
-    # '010': '0' * 16,
-    # '011': '0' * 16,
-    # '100': '0' * 16,
-    # '101': '0' * 16,
-    # '110': '0' * 16,
-
-    ####TESTING.....
-
-    '000': '0000000000001111',
+    '000': '0' * 16,
     '001': '0' * 16, 
     '010': '0' * 16,
-    '011': '0000000000001111',
-    '100': '0000000000000111',
+    '011': '0' * 16,
+    '100': '0' * 16,
     '101': '0' * 16,
     '110': '0' * 16,
-    '111': {'V':'0', 'L': '0', 'G': '0', 'E': '0'}
+
+    # ####TESTING.....
+
+    # '000': '0000000000001111',
+    # '001': '0' * 16, 
+    # '010': '0' * 16,
+    # '011': '0000000000001111',
+    # '100': '0000000000000111',
+    # '101': '0' * 16,
+    # '110': '0' * 16,
+    # '111': {'V':'0', 'L': '0', 'G': '0', 'E': '0'}
 }
 
 #input - block
@@ -217,38 +217,172 @@ registers = {
 #counter
 line_counter = 0
 
-# while True:
-#     try:
-#         instruction = input().strip()
-#         memory[line_counter] = instruction
-#         line_counter += 1
+while True:
+    try:
+        instruction = input().strip()
+        memory[line_counter] = instruction
+        line_counter += 1
     
-#     except:
-#         break
+    except:
+        break
 
-#####Testing......
-jmp('0111100000001111')
-PRINT()
+# #####Testing......
+# jmp('0111100000001111')
+# PRINT()
 
 
 while pc<line_counter:
 
     #updating bonus variables
     cycle_list.append(cycle)
-    cycle += 1
+    
     pc_list.append(pc)
 
     code = memory[pc]
     op_code = code[0:5]
 
+
     if op_code == '00000':
-        pc += add(code)
+        temp = add(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+    
+    elif op_code == '00001':
+        temp = sub(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+    
+    elif op_code == '00010':
+        temp = mov_imm(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+    
+    elif op_code == '00011':
+        temp = mov_reg(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
     
     elif op_code == '00100':
-        pc += ld(code)
+        temp = ld(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
     
     elif op_code == '00101':
-        pc += st(code)
+        temp = st(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+    
+    elif op_code == '00110':
+        temp = mul(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+
+    elif op_code == '00111':
+        temp = div(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+
+    elif op_code == '01000':
+        temp = rs(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+    
+    elif op_code == '01001':
+        temp = ls(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+
+    elif op_code == '01010':
+        temp = xor(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+
+    elif op_code == '01011':
+        temp = or_fun(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+
+    elif op_code == '01100':
+        temp = and_fun(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+
+    elif op_code == '01101':
+        temp = inv(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+
+    elif op_code == '01110':
+        temp = cmp(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+
+    elif op_code == '01111':
+        temp = jmp(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+
+    elif op_code == '10000':
+        temp = jlt(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+    
+    elif op_code == '10001':
+        temp = jgt(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+    
+    elif op_code == '10010':
+        temp = je(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+    
+    elif op_code == '10011':
+        temp = hlt(code)
+        if temp[0] : 
+            pc = temp[1]
+        else : 
+            pc += 1
+
+    cycle += 1
 
 #printing memory dump
 
