@@ -382,7 +382,9 @@ while pc<line_counter:
         else : 
             pc += 1
 
+    PRINT()
     cycle += 1
+
 
 #printing memory dump
 
