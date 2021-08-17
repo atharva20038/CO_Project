@@ -17,9 +17,10 @@ import math as plt
 def PRINT():
     pc_bin = bin(pc)[2:]
     #error correction
-    pc_bin = str(0 * (8-len(pc_bin))) + pc_bin
+    pc_bin = '0' * (8 - len(pc_bin)) + pc_bin
     print(pc_bin, registers['000'], registers['001'], registers['010'], registers['011'], registers['100'], registers['101'], registers['110'], '0'*12 + registers['111']['V'] + registers['111']['L'] + registers['111']['G'] + registers['111']['E'])
-
+    return
+    
 #Type - A
 
 def add(code):
@@ -37,9 +38,7 @@ def add(code):
     else:
         temp = bin(sum)[2:]
         registers[reg1] = '0' * (16 - len(temp)) + temp 
-    
-  
-
+    PRINT()
     return (1,False)  #increment of program counter
 
 def sub(code):
@@ -50,17 +49,14 @@ def sub(code):
     registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset Flag Registers
     diff = int(registers[reg2],2) - int(registers[reg3],2)
 
-
     #checking for overflow
-    if diff > pow(2,16) - 1:
+    if diff < 0:
         registers['111']['V'] = '1'   #overflow bit set if overflow occurs
-        registers[reg1] = bin(diff)[-16:]
+        registers[reg1] = '0' * 16
     else:
         temp = bin(diff)[2:]
         registers[reg1] = '0' * (16 - len(temp)) + temp 
-    
-  
-
+    PRINT()
     return (1,False)  #increment of program counter
 
 def mul(code):
@@ -71,7 +67,6 @@ def mul(code):
     registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset Flag registers
     Mul = int(registers[reg2],2) * int(registers[reg3],2)
 
-
     #checking for overflow
     if Mul > pow(2,16) - 1:
         registers['111']['V'] = '1'   #overflow bit set if overflow occurs
@@ -79,7 +74,7 @@ def mul(code):
     else:
         temp = bin(Mul)[2:]
         registers[reg1] = '0' * (16 - len(temp)) + temp 
-    
+    PRINT()
     return (1,False)  #increment of program counter
 
 def xor(code):
@@ -88,24 +83,16 @@ def xor(code):
     reg3 = code[13:]
 
     registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
+    temp = ''
     i=0
     while(i<len(registers[reg2])):
         if((registers[reg2][i]) == registers[reg3][i]):
-            registers[reg1] += '0'
+            temp += '0'
         else:
-            registers[reg1] += '1'
+            temp += '1'
         i+=1
-    registers[reg1] = '0' * (16 - len(registers[reg1])) + registers[reg1]
-
-
-
-    if(int(registers[reg2],2) > int(registers[reg3],2)):
-        registers['111']['G'] = '1'
-    elif int(registers[reg2],2) < int(registers[reg3],2):
-        registers['111']['L'] = '1'
-    else:
-        registers['111']['E'] = '1'
-    
+    registers[reg1] = temp
+    PRINT()
     return (1,False)
 
 def or_fun(code):
@@ -114,25 +101,16 @@ def or_fun(code):
     reg3 = code[13:]
 
     registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
-
+    temp = ''
     i=0
     while(i<len(registers[reg2])):
         if((registers[reg2][i]) == 1 or registers[reg3][i] == 1):
-            registers[reg1] += '1'
+            temp += '1'
         else:
-            registers[reg1] += '0'
+            temp += '0'
         i+=1
-    registers[reg1] = '0' * (16 - len(registers[reg1])) + registers[reg1]
-
-
-
-    if(int(registers[reg2],2) > int(registers[reg3],2)):
-        registers['111']['G'] = '1'
-    elif int(registers[reg2],2) < int(registers[reg3],2):
-        registers['111']['L'] = '1'
-    else:
-        registers['111']['E'] = '1'
-    
+    registers[reg1] = temp
+    PRINT()
     return (1,False)
 
 def and_fun(code):
@@ -142,63 +120,63 @@ def and_fun(code):
     reg3 = code[13:]
 
     registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
-
+    temp = ''
     i=0
     while(i<len(registers[reg2])):
         if((registers[reg2][i]) == 1 and registers[reg3][i] == 1):
-            registers[reg1] += '1'
+            temp += '1'
         else:
-            registers[reg1] += '0'
+            temp += '0'
         i+=1
-    registers[reg1] = '0' * (16 - len(registers[reg1])) + registers[reg1]
-
-
-
-    if(int(registers[reg2],2) > int(registers[reg3],2)):
-        registers['111']['G'] = '1'
-    elif int(registers[reg2],2) < int(registers[reg3],2):
-        registers['111']['L'] = '1'
-    else:
-        registers['111']['E'] = '1'
-    
+    registers[reg1] = temp
+    PRINT()
     return (1,False)
 
 #Type - B
 
 def mov_imm(code):
-    reg1 = code[7:10]
-    registers[reg1] = Imm      ##immediate stored in Imm
-
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
+    reg1 = code[5:8]
+    Imm = code[8:]
+    registers[reg1] = '0' * 8 + Imm      ##immediate stored in Imm
+    PRINT()
     return (1,False)
 
 def rs(code):
-    reg1 = code[7:10]
-    shifter = int(Imm)
-    registers[reg1] = '0'*shifter + registers[reg1][0:16-shifter]
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
+    reg1 = code[5:8]
+    reg_val = int(registers[reg1],2)
+    shifter = int(code[8:],2)
+    registers[reg1] = bin(reg_val >> shifter)[2:]
+    PRINT()
     return (1,False)
 
 def ls(code):
-    reg1 = code[7:10]
-    shifter = int(Imm)
-    registers[reg1] = registers[reg1][shifter:length(registers[reg1])] + '0'*shifter
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
+    reg1 = code[5:8]
+    reg_val = int(registers[reg1],2)
+    shifter = int(code[8:],2)
+    registers[reg1] = bin(reg_val << shifter)[2:]
+    PRINT()
     return (1,False)
 
 #Type - C
 
 def mov_reg(code):
-    
-    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
-
 
     r1 = code[10:13]
     r2 = code[13:16]
 
     #moving r2 to r1 
-    registers[r1] = registers[r2]
-
+    if r2 != '111':
+        registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+        registers[r1] = registers[r2]
+        PRINT()
+    else:
+        registers[r1] = '0'*12 + registers['111']['V'] + registers['111']['L'] + registers['111']['G'] + registers['111']['E']
+        registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+        PRINT()
     return (1,False)
-
-    
 
 
 def div(code):
@@ -217,10 +195,9 @@ def div(code):
     #storing the remainder
     r1 = bin(int(registers[r3],2) - int(registers['000'],2)*int(registers[r4],2))[2:]
     registers['001'] = '0'*(16-len(r1)) + r1
-
+    PRINT()
     return (1,False) 
     
-
 
 def inv(code):
     ###need confirmation on some part ....waiting for confirmation
@@ -241,7 +218,7 @@ def inv(code):
 
 
     registers[r1] = '0'*(16-len(temp)) + temp
-
+    PRINT()
     return (1,False)
         
 
@@ -261,7 +238,7 @@ def cmp(code):
         registers['111']['L'] = '1'
     else : 
         registers['111']['E'] = '1'
-
+    PRINT()
     return (1,False)
     
 
@@ -274,6 +251,7 @@ def ld(code):
     reg = code[5:8]
     mem_add = code[8:]
     registers[reg] = memory[int(mem_add, 2)]
+    PRINT()
     return (1,False)
 
 def st(code):
@@ -283,6 +261,7 @@ def st(code):
     reg = code[5:8]
     mem_add = code[8:]
     memory[int(mem_add, 2)] = registers[reg]
+    PRINT()
     return (1,False)
 
 #Type - E
@@ -291,33 +270,44 @@ def jmp(code):
     address = code[8:16]
     
     registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+    PRINT()
     return (int(address,2),True)
 
 def jlt(code):
-    if registers['L'] == '1' : 
+    if registers['111']['L'] == '1' : 
         registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+        PRINT()
         return (int(code[8:16],2),True)
     else : 
+        registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+        PRINT()
         return (1,False)
 
 def jgt(code):
-    if registers['G'] == '1' : 
+    if registers['111']['G'] == '1' : 
         registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+        PRINT()
         return (int(code[8:16],2),True)
     else : 
+        registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+        PRINT()
         return (1,False)
 
 def je(code):
-    if registers['E'] == '1' : 
-        registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+    if registers['111']['E'] == '1' : 
+        registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags registe0r
+        PRINT()
         return (int(code[8:16],2),True)
     else : 
+        registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+        PRINT()
         return (1,False)
 
 #Type - F
 
 def hlt(code):
     registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+    PRINT()
     return (line_counter+1,True)
 
 #------------global variables-------------
@@ -370,6 +360,13 @@ while True:
     except:
         break
 
+# while True:
+#     line = input().strip()
+#     if line == '':
+#         break
+#     memory[line_counter] = line
+#     line_counter += 1
+
 # #####Testing......
 # jmp('0111100000001111')
 # PRINT()
@@ -388,172 +385,172 @@ while pc<line_counter:
     #add
     if op_code == '00000':
         temp = add(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
    #sub 
     elif op_code == '00001':
         temp = sub(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
     
     #mov_imm
     elif op_code == '00010':
         temp = mov_imm(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
     
     #mov_reg
     elif op_code == '00011':
         temp = mov_reg(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
     
     #ld
     elif op_code == '00100':
         temp = ld(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
     
     #st
     elif op_code == '00101':
         temp = st(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
     
     #mul
     elif op_code == '00110':
         temp = mul(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
     #div
     elif op_code == '00111':
         temp = div(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
     #rs
     elif op_code == '01000':
         temp = rs(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
     
     #ls
     elif op_code == '01001':
         temp = ls(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
     #xor
     elif op_code == '01010':
         temp = xor(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
     #or_fun
     elif op_code == '01011':
         temp = or_fun(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
     #and_fun
     elif op_code == '01100':
         temp = and_fun(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
     #inv
     elif op_code == '01101':
         temp = inv(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
     #cmp
     elif op_code == '01110':
         temp = cmp(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
     #jmp
     elif op_code == '01111':
         temp = jmp(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
     #jlt
     elif op_code == '10000':
         temp = jlt(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
     
     #jgt
     elif op_code == '10001':
         temp = jgt(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
     
     #je
     elif op_code == '10010':
         temp = je(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
     
     #hlt
     elif op_code == '10011':
         temp = hlt(code)
-        if temp[0] : 
-            pc = temp[1]
+        if temp[1] : 
+            pc = temp[0]
         else : 
             pc += 1
 
-    PRINT()
+    #PRINT()
     cycle += 1
 
 
 #printing memory dump
 
 #####testing.... so removed this bit temporarily
-# for x in memory:
-#     print(x)
+for x in memory:
+    print(x)
 
 #bonus plot
 # plt.plot(cycle_list, pc_list)
