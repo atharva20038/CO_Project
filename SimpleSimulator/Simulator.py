@@ -35,7 +35,7 @@ def add(code):
     
   
 
-    return 1  #increment of program counter
+    return (1,False)  #increment of program counter
 
 def sub(code):
     pass
@@ -72,6 +72,8 @@ def mov_reg(code):
     #moving r2 to r1 
     registers[r1] = registers[r2]
 
+    return (1,False)
+
     
 
 
@@ -87,7 +89,9 @@ def div(code):
 
     #storing the remainder
     r1 = bin(int(registers[r3],2) - int(registers['000'],2)*int(registers[r4],2))[2:]
-    registers['001'] = '0'*(16-len(r1)) + r1 
+    registers['001'] = '0'*(16-len(r1)) + r1
+
+    return (1,False) 
     
 
 
@@ -108,6 +112,8 @@ def inv(code):
 
 
     registers[r1] = '0'*(16-len(temp)) + temp
+
+    return (1,False)
         
 
 
@@ -123,6 +129,8 @@ def cmp(code):
         registers['111']['L'] = '1'
     else : 
         registers['111']['E'] = '1'
+
+    return (1,False)
     
 
 #Type - D
@@ -131,43 +139,43 @@ def ld(code):
     reg = code[5:8]
     mem_add = code[8:]
     registers[reg] = memory[int(mem_add, 2)]
-    return 1
+    return (1,False)
 
 def st(code):
     reg = code[5:8]
     mem_add = code[8:]
     memory[int(mem_add, 2)] = registers[reg]
-    return 1
+    return (1,False)
 
 #Type - E
 
 def jmp(code):
     address = code[8:16]
     print(int(address,2))
-    return int(address,2)
+    return (int(address,2),True)
 
 def jlt(code):
     if registers['L'] == '1' : 
-        return int(code[8:16],2)
+        return (int(code[8:16],2),True)
     else : 
-        return 1
+        return (1,False)
 
 def jgt(code):
     if registers['G'] == '1' : 
-        return int(code[8:16],2)
+        return (int(code[8:16],2),True)
     else : 
-        return 1
+        return (1,False)
 
 def je(code):
     if registers['E'] == '1' : 
-        return int(code[8:16],2)
+        return (int(code[8:16],2),True)
     else : 
-        return 1
+        return (1,False)
 
 #Type - F
 
 def hlt(code):
-    pass
+    return (256,True)
 
 #------------global variables-------------
 
