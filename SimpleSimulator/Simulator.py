@@ -85,7 +85,10 @@ def ld(code):
     return 1
 
 def st(code):
-    pass
+    reg = code[5:8]
+    mem_add = code[8:]
+    memory[int(mem_add, 2)] = registers[reg]
+    return 1
 
 #Type - E
 
