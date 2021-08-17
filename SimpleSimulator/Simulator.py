@@ -27,7 +27,7 @@ def add(code):
     reg2 = code[10:13]
     reg3 = code[13:]
 
-    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #Reset flags register
 
     sum = int(registers[reg2],2) + int(registers[reg3],2)
     #checking for overflow
@@ -43,30 +43,145 @@ def add(code):
     return (1,False)  #increment of program counter
 
 def sub(code):
-    pass
+    reg1 = code[7:10]
+    reg2 = code[10:13]
+    reg3 = code[13:]
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset Flag Registers
+    diff = int(registers[reg2],2) - int(registers[reg3],2)
+
+
+    #checking for overflow
+    if diff > pow(2,16) - 1:
+        registers['111']['V'] = '1'   #overflow bit set if overflow occurs
+        registers[reg1] = bin(diff)[-16:]
+    else:
+        temp = bin(diff)[2:]
+        registers[reg1] = '0' * (16 - len(temp)) + temp 
+    
+  
+
+    return (1,False)  #increment of program counter
 
 def mul(code):
-    pass
+    reg1 = code[7:10]
+    reg2 = code[10:13]
+    reg3 = code[13:]
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset Flag registers
+    Mul = int(registers[reg2],2) * int(registers[reg3],2)
+
+
+    #checking for overflow
+    if Mul > pow(2,16) - 1:
+        registers['111']['V'] = '1'   #overflow bit set if overflow occurs
+        registers[reg1] = bin(Mul)[-16:]
+    else:
+        temp = bin(Mul)[2:]
+        registers[reg1] = '0' * (16 - len(temp)) + temp 
+    
+    return (1,False)  #increment of program counter
 
 def xor(code):
-    pass
+    reg1 = code[7:10]
+    reg2 = code[10:13]
+    reg3 = code[13:]
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
+    i=0
+    while(i<len(registers[reg2])):
+        if((registers[reg2][i]) == registers[reg3][i]):
+            registers[reg1] += '0'
+        else:
+            registers[reg1] += '1'
+        i+=1
+    registers[reg1] = '0' * (16 - len(registers[reg1])) + registers[reg1]
+
+
+
+    if(int(registers[reg2],2) > int(registers[reg3],2)):
+        registers['111']['G'] = '1'
+    elif int(registers[reg2],2) < int(registers[reg3],2):
+        registers['111']['L'] = '1'
+    else:
+        registers['111']['E'] = '1'
+    
+    return (1,False)
 
 def or_fun(code):
-    pass
+    reg1 = code[7:10]
+    reg2 = code[10:13]
+    reg3 = code[13:]
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
+
+    i=0
+    while(i<len(registers[reg2])):
+        if((registers[reg2][i]) == 1 or registers[reg3][i] == 1):
+            registers[reg1] += '1'
+        else:
+            registers[reg1] += '0'
+        i+=1
+    registers[reg1] = '0' * (16 - len(registers[reg1])) + registers[reg1]
+
+
+
+    if(int(registers[reg2],2) > int(registers[reg3],2)):
+        registers['111']['G'] = '1'
+    elif int(registers[reg2],2) < int(registers[reg3],2):
+        registers['111']['L'] = '1'
+    else:
+        registers['111']['E'] = '1'
+    
+    return (1,False)
 
 def and_fun(code):
-    pass
+    
+    reg1 = code[7:10]
+    reg2 = code[10:13]
+    reg3 = code[13:]
+
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
+
+    i=0
+    while(i<len(registers[reg2])):
+        if((registers[reg2][i]) == 1 and registers[reg3][i] == 1):
+            registers[reg1] += '1'
+        else:
+            registers[reg1] += '0'
+        i+=1
+    registers[reg1] = '0' * (16 - len(registers[reg1])) + registers[reg1]
+
+
+
+    if(int(registers[reg2],2) > int(registers[reg3],2)):
+        registers['111']['G'] = '1'
+    elif int(registers[reg2],2) < int(registers[reg3],2):
+        registers['111']['L'] = '1'
+    else:
+        registers['111']['E'] = '1'
+    
+    return (1,False)
 
 #Type - B
 
 def mov_imm(code):
-    pass
+    reg1 = code[7:10]
+    registers[reg1] = Imm      ##immediate stored in Imm
+
+    return (1,False)
 
 def rs(code):
-    pass
+    reg1 = code[7:10]
+    shifter = int(Imm)
+    registers[reg1] = '0'*shifter + registers[reg1][0:16-shifter]
+    return (1,False)
 
 def ls(code):
-    pass
+    reg1 = code[7:10]
+    shifter = int(Imm)
+    registers[reg1] = registers[reg1][shifter:length(registers[reg1])] + '0'*shifter
+    return (1,False)
 
 #Type - C
 
