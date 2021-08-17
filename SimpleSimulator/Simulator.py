@@ -5,6 +5,11 @@
 
 #import matplotlib.pyplot as plt
 
+####DOUBTS ---- To Be Addressed : 
+# For which all functions do we have to reset the registers?
+# Invert Function would lead to a change in MSB? Or Would it lead to Overflow?
+# Do we have to check for overflow in functions like division?
+
 #------------------functions------------------
 
 #printing function
@@ -199,6 +204,7 @@ registers = {
     '100': '0' * 16,
     '101': '0' * 16,
     '110': '0' * 16,
+    '111': {'V':'0', 'L': '0', 'G': '0', 'E': '0'}
 
     # ####TESTING.....
 
@@ -241,14 +247,15 @@ while pc<line_counter:
     code = memory[pc]
     op_code = code[0:5]
 
-
+    #add
     if op_code == '00000':
         temp = add(code)
         if temp[0] : 
             pc = temp[1]
         else : 
             pc += 1
-    
+
+   #sub 
     elif op_code == '00001':
         temp = sub(code)
         if temp[0] : 
@@ -256,6 +263,7 @@ while pc<line_counter:
         else : 
             pc += 1
     
+    #mov_imm
     elif op_code == '00010':
         temp = mov_imm(code)
         if temp[0] : 
@@ -263,6 +271,7 @@ while pc<line_counter:
         else : 
             pc += 1
     
+    #mov_reg
     elif op_code == '00011':
         temp = mov_reg(code)
         if temp[0] : 
@@ -270,6 +279,7 @@ while pc<line_counter:
         else : 
             pc += 1
     
+    #ld
     elif op_code == '00100':
         temp = ld(code)
         if temp[0] : 
@@ -277,6 +287,7 @@ while pc<line_counter:
         else : 
             pc += 1
     
+    #st
     elif op_code == '00101':
         temp = st(code)
         if temp[0] : 
@@ -284,6 +295,7 @@ while pc<line_counter:
         else : 
             pc += 1
     
+    #mul
     elif op_code == '00110':
         temp = mul(code)
         if temp[0] : 
@@ -291,6 +303,7 @@ while pc<line_counter:
         else : 
             pc += 1
 
+    #div
     elif op_code == '00111':
         temp = div(code)
         if temp[0] : 
@@ -298,6 +311,7 @@ while pc<line_counter:
         else : 
             pc += 1
 
+    #rs
     elif op_code == '01000':
         temp = rs(code)
         if temp[0] : 
@@ -305,6 +319,7 @@ while pc<line_counter:
         else : 
             pc += 1
     
+    #ls
     elif op_code == '01001':
         temp = ls(code)
         if temp[0] : 
@@ -312,6 +327,7 @@ while pc<line_counter:
         else : 
             pc += 1
 
+    #xor
     elif op_code == '01010':
         temp = xor(code)
         if temp[0] : 
@@ -319,6 +335,7 @@ while pc<line_counter:
         else : 
             pc += 1
 
+    #or_fun
     elif op_code == '01011':
         temp = or_fun(code)
         if temp[0] : 
@@ -326,6 +343,7 @@ while pc<line_counter:
         else : 
             pc += 1
 
+    #and_fun
     elif op_code == '01100':
         temp = and_fun(code)
         if temp[0] : 
@@ -333,6 +351,7 @@ while pc<line_counter:
         else : 
             pc += 1
 
+    #inv
     elif op_code == '01101':
         temp = inv(code)
         if temp[0] : 
@@ -340,6 +359,7 @@ while pc<line_counter:
         else : 
             pc += 1
 
+    #cmp
     elif op_code == '01110':
         temp = cmp(code)
         if temp[0] : 
@@ -347,6 +367,7 @@ while pc<line_counter:
         else : 
             pc += 1
 
+    #jmp
     elif op_code == '01111':
         temp = jmp(code)
         if temp[0] : 
@@ -354,6 +375,7 @@ while pc<line_counter:
         else : 
             pc += 1
 
+    #jlt
     elif op_code == '10000':
         temp = jlt(code)
         if temp[0] : 
@@ -361,6 +383,7 @@ while pc<line_counter:
         else : 
             pc += 1
     
+    #jgt
     elif op_code == '10001':
         temp = jgt(code)
         if temp[0] : 
@@ -368,6 +391,7 @@ while pc<line_counter:
         else : 
             pc += 1
     
+    #je
     elif op_code == '10010':
         temp = je(code)
         if temp[0] : 
@@ -375,6 +399,7 @@ while pc<line_counter:
         else : 
             pc += 1
     
+    #hlt
     elif op_code == '10011':
         temp = hlt(code)
         if temp[0] : 
