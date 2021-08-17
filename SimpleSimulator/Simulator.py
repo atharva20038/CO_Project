@@ -79,7 +79,10 @@ def cmp(code):
 #Type - D
 
 def ld(code):
-    pass
+    reg = code[5:8]
+    mem_add = code[8:]
+    registers[reg] = memory[int(mem_add, 2)]
+    return 1
 
 def st(code):
     pass
