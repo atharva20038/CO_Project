@@ -27,7 +27,7 @@ def add(code):
     reg2 = code[10:13]
     reg3 = code[13:]
 
-    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #re-setting flags register
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'  #Reset flags register
 
     sum = int(registers[reg2],2) + int(registers[reg3],2)
     #checking for overflow
@@ -47,7 +47,7 @@ def sub(code):
     reg2 = code[10:13]
     reg3 = code[13:]
 
-    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset Flag Registers
     diff = int(registers[reg2],2) - int(registers[reg3],2)
 
 
@@ -68,7 +68,7 @@ def mul(code):
     reg2 = code[10:13]
     reg3 = code[13:]
 
-    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
+    registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset Flag registers
     Mul = int(registers[reg2],2) * int(registers[reg3],2)
 
 
