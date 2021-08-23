@@ -3,12 +3,8 @@
 #Nipun Gupta
 #Shantanu Dixit
 
-import math as plt
+import matplotlib.pyplot as plt
 
-####DOUBTS ---- To Be Addressed : 
-# For which all functions do we have to reset the registers? ---- we have to reset flag register before every operation. only in jump ops we have to read value of flags and then reset.
-# Invert Function would lead to a change in MSB? Or Would it lead to Overflow?
-# Do we have to check for overflow in functions like division? ---- idts because it is mentioned only add sub and mul can set the overflow bit.
 
 #------------------functions------------------
 
@@ -250,9 +246,10 @@ def ld(code):
 
     reg = code[5:8]
     mem_add = code[8:]
+    mem_int = int(mem_add, 2)
     registers[reg] = memory[int(mem_add, 2)]
     PRINT()
-    return (1,False)
+    return (1,False,mem_int)
 
 def st(code):
 
@@ -261,8 +258,9 @@ def st(code):
     reg = code[5:8]
     mem_add = code[8:]
     memory[int(mem_add, 2)] = registers[reg]
+    mem_int = int(mem_add, 2)
     PRINT()
-    return (1,False)
+    return (1,False,mem_int)
 
 #Type - E
 
@@ -421,6 +419,9 @@ while pc<line_counter:
             pc = temp[0]
         else : 
             pc += 1
+
+        pc_list.append(temp[2])
+        cycle_list.append(cycle)
     
     #st
     elif op_code == '00101':
@@ -429,6 +430,9 @@ while pc<line_counter:
             pc = temp[0]
         else : 
             pc += 1
+
+        pc_list.append(temp[2])
+        cycle_list.append(cycle)
     
     #mul
     elif op_code == '00110':
@@ -553,8 +557,9 @@ for x in memory:
     print(x)
 
 #bonus plot
-# plt.plot(cycle_list, pc_list)
-# plt.xlabel('Cycle')
-# plt.ylabel('Memory address')
-# plt.title('Memory address v/s cycle')
-# plt.plot()
+
+plt.xlabel('Cycle')
+plt.ylabel('Memory address')
+plt.title('Memory address v/s cycle')
+plt.scatter(cycle_list, pc_list)
+plt.savefig("abc.png")
