@@ -46,7 +46,11 @@ def sub(code):
     diff = int(registers[reg2],2) - int(registers[reg3],2)
 
     #checking for overflow
-    if diff < 0:
+    if diff > pow(2,16) - 1:
+        registers['111']['V'] = '1'   #overflow bit set if overflow occurs
+        registers[reg1] = bin(diff)[-16:]
+
+    elif diff < 0:
         registers['111']['V'] = '1'   #overflow bit set if overflow occurs
         registers[reg1] = '0' * 16
     else:
@@ -141,18 +145,16 @@ def mov_imm(code):
 def rs(code):
     registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
     reg1 = code[5:8]
-    reg_val = int(registers[reg1],2)
     shifter = int(code[8:],2)
-    registers[reg1] = bin(reg_val >> shifter)[2:]
+    registers[reg1] = '0'*shifter + registers[reg1][0:16-shifter]
     PRINT()
     return (1,False)
 
 def ls(code):
     registers['111']['V'] = registers['111']['L'] = registers['111']['G'] = registers['111']['E'] = '0'   #Reset
     reg1 = code[5:8]
-    reg_val = int(registers[reg1],2)
     shifter = int(code[8:],2)
-    registers[reg1] = bin(reg_val << shifter)[2:]
+    registers[reg1] = registers[reg1][shifter:16] + '0'*shifter
     PRINT()
     return (1,False)
 
@@ -334,7 +336,7 @@ registers = {
 
     # ####TESTING.....
 
-    # '000': '0000000000001111',
+    # '000': '0011111111111111',
     # '001': '0' * 16, 
     # '010': '0' * 16,
     # '011': '0000000000001111',
