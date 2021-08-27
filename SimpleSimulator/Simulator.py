@@ -311,7 +311,7 @@ def hlt(code):
 #------------global variables-------------
 
 #variables for bonus question
-cycle = 1
+cycle = 0
 cycle_list = []
 pc_list = []
 
