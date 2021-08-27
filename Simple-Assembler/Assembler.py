@@ -257,7 +257,7 @@ opcode = {"add":("00000","A"),"sub":("00001","A"),"mov":(("00010","B"),("00011",
         "hlt":("10011","F")}
 
 reg_code = {'R0':'000', 'R1':'001', 'R2':'010', 'R3':'011', 'R4':'100', 'R5':'101', 'R6':'110', 'FLAGS':'111'}  #codes of registers
-reg_data = {'R0':0, 'R1':0, 'R2':0, 'R3':0, 'R4':0, 'R5':0, 'R6':0, 'FLAGS':[0,0,0,0]}  #decimal values of R0-R6 registers and V,L,G,E bits of flags register
+#reg_data = {'R0':0, 'R1':0, 'R2':0, 'R3':0, 'R4':0, 'R5':0, 'R6':0, 'FLAGS':[0,0,0,0]}  #decimal values of R0-R6 registers and V,L,G,E bits of flags register
 
 variables = {}  # Dictionary to store memory and values of variables
 labels = {}  # Dictionary to store memory of labels
@@ -285,7 +285,10 @@ while True:
         if line[0][-1] == ':':
             if line[0][:-1] in labels.keys() : 
                 flag = True
-                error_msg = "Label already declared"
+                error_msg = "Label already declared in line: " + str(blank_included_count)
+            if line[0][:-1] in reg_code or line[0][:-1] in reg_code:
+                flag = True
+                error_msg = "Label name can\'t be opcode or register name. Error in line: " + str(blank_included_count)
             labels[line[0][:-1]] = line_count
 
         blank_included_count += 1
@@ -599,8 +602,8 @@ if not flag :
             if flag:
                 break
 
-            if ith_instruction[1] in opcode:
-                error_msg = 'Variable name Can\'t be an operation code: ' + str(ith_instruction[-1])
+            if ith_instruction[1] in opcode or ith_instruction[1] in reg_code:
+                error_msg = 'Variable name Can\'t be an operation code or Register name: ' + str(ith_instruction[-1])
                 flag = True
                 break 
 
